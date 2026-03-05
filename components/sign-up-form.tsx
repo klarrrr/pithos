@@ -72,7 +72,7 @@ export function SignUpForm({
     </div>
       <Card className="w-full">
         <CardHeader>
-            <Link href="#" onClick={(e) => { e.preventDefault(); router.back(); }} className="text-xs text-muted-foreground hover:underline w-fit mb-4 block">
+            <Link href="/" className="text-xs text-muted-foreground hover:underline w-fit mb-4 block">
               &lt; Return
             </Link>
             <CardTitle className="text-2xl">Sign up</CardTitle>
