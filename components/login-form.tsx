@@ -17,11 +17,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import SocialAuthButtons from "./SocialAuthButtons";
 import Separator from "@/components/Separator";
+import Image from "next/image";
 
 export function LoginForm({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+}: React.HTMLAttributes<HTMLDivElement>) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -49,14 +50,28 @@ export function LoginForm({
     }
   };
 
-  return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+return (
+  <div className={cn("flex flex-col gap-6 items-center", className)} {...props}>
+    
+    <div className="flex items-center gap-3 text-4xl font-bold uppercase">
+    <Image
+        src="/pithos/pithos-logo.svg"
+        width={60}
+        height={60}
+        alt="Pithos Logo"
+    />
+    <span className="font-inter tracking-wide">PITHOS</span>
+    </div>
+
+    <Card className="w-full">
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account
-          </CardDescription>
+            <Link href="#" onClick={(e) => { e.preventDefault(); router.back(); }} className="text-xs text-muted-foreground hover:underline w-fit mb-4 block">
+            &lt; Return
+            </Link>
+            <CardTitle className="text-2xl">Login</CardTitle>
+            <CardDescription>
+                Enter your email below to login to your account
+            </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin}>
@@ -90,8 +105,11 @@ export function LoginForm({
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
+                {error && (
+                <div className=" rounded-lg border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-700 dark:bg-red-950 dark:text-red-100">
+                    {error}
+                </div>
+                )}              <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Logging in..." : "Login"}
               </Button>
             </div>
