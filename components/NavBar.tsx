@@ -34,12 +34,12 @@ const NavBar = async () => {
             
             {/* Sign Ups and Stuff */}
 
-            <div className="flex gap-5 items-center">    
+            <div className="flex gap-2 items-center">    
+                <ThemeSwitcher/>
+                <ShoppingCartBtn/>
                 <Suspense>
                     <AuthButton />
                 </Suspense>
-                <ThemeSwitcher/>
-                <ShoppingCartBtn/>
             </div>
 
 

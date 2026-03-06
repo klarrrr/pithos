@@ -17,7 +17,7 @@ const NavSearchBar = () => {
             // TODO: Put function of the SEARCH here inside the if expression.
             if(e.key == 'Enter') exampleSearchFunction(searchContent);
         }}/>
-        <button className="bg-[#E11D48] p-1 text-white hover:bg-[#FF4D4D]" onClick={()=>{exampleSearchFunction(searchContent)}}><Search width={32} height={24}/></button>
+        <button className="bg-[#E11D48] p-1 px-3 text-white hover:bg-[#FF4D4D]" onClick={()=>{exampleSearchFunction(searchContent)}}><Search width={16} height={24}/></button>
     </div>
   )
 }
