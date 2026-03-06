@@ -68,10 +68,12 @@ return (
             <Link href="/" className="text-xs text-muted-foreground hover:underline w-fit mb-4 block">
             &lt; Return
             </Link>
-            <CardTitle className="text-2xl">Login</CardTitle>
-            <CardDescription>
-                Enter your email below to login to your account
-            </CardDescription>
+            <div className="flex flex-col gap-2 items-start">
+              <CardTitle className="text-2xl">Login</CardTitle>
+              <CardDescription>
+                  Enter your email below to login to your account
+              </CardDescription>
+            </div>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin}>

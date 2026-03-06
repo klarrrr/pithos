@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import Image from "next/image";
 import { ThemeSwitcher } from "./theme-switcher";
 import NavSearchBar from "@/components/NavSearchBar";
+import ShoppingCartBtn from "./ShoppingCartBtn";
 
 
 const NavBar = async () => {
@@ -12,7 +13,7 @@ const NavBar = async () => {
     // if (loading) return <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16 dark:bg-[#0F0F0F] bg-[#0F0F0F]">Loading...</nav>
 
     return (
-    <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16 dark:bg-[#0F0F0F] bg-[#0F0F0F] fixed">
+    <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16 dark:bg-[#0F0F0F] bg-[#0F0F0F] sticky">
         <div className="w-full flex justify-between items-center p-3 px-5 text-sm">
 
             {/* Logo Brand */}
@@ -38,6 +39,7 @@ const NavBar = async () => {
                     <AuthButton />
                 </Suspense>
                 <ThemeSwitcher/>
+                <ShoppingCartBtn/>
             </div>
 
 
