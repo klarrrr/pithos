@@ -44,17 +44,55 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: If you remove getClaims() and you use server-side rendering
   // with the Supabase client, your users may be randomly logged out.
-  const { data } = await supabase.auth.getClaims();
-  const user = data?.claims;
-  const protectedRoutes = [
-    "/account",
-    "/shopping-cart"
-  ];
-  
-  const isProtectedRoute = protectedRoutes.some(route=> request.nextUrl.pathname.startsWith(route),);
+  const { data : claims } = await supabase.auth.getClaims();
+  const user = claims?.claims;
 
-  if(isProtectedRoute && !user){
+  const role = user?.app_role;
+
+  const pathname = request.nextUrl.pathname;
+
+  // routes allowed per role
+  const roleRoutes: Record<string, string[]> = {
+    buyer: ["/buyer", "/account", "/shopping-cart"],
+    seller: ["/seller", "/account", "/shopping-cart"],
+    admin: ["/admin", "/account", "/admin-dashboard", "/shopping-cart"],
+  };
+
+  // everyone can access main page
+  if (pathname === "/") {
+    return supabaseResponse;
+  }
+
+  // routes that require login
+  const protectedRoutes = [
+    "/buyer",
+    "/seller",
+    "/admin",
+    "/account",
+    "/shopping-cart",
+    "/admin-dashboard",
+  ];
+
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    pathname.startsWith(route),
+  );
+
+  // if not logged in
+  if (isProtectedRoute && !user) {
     return NextResponse.redirect(new URL("/auth/login", request.url));
+  }
+
+  // role check
+  if (user) {
+    const allowedRoutes = roleRoutes[role] || [];
+
+    const hasAccess = allowedRoutes.some((route) =>
+      pathname.startsWith(route),
+    );
+
+    if (!hasAccess) {
+      return NextResponse.redirect(new URL("/unauthorized", request.url));
+    }
   }
  
 

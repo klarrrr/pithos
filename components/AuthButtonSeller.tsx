@@ -6,8 +6,6 @@ import { LogoutButton } from "./logout-button";
 import { useAuth } from "./AuthProvider";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import Router from "next/router";
-
 
 export function AuthButton() {
   const { user, loading } = useAuth();
@@ -30,7 +28,7 @@ export function AuthButton() {
   return user ? (
     <div className="flex items-center gap-4 text-white">
       {user_avatar ? (
-        <Link href={'/account'}>
+        <Link href={'/seller/account'}>
           <Image
             src={user_avatar}
             width={user_avatar_size}
