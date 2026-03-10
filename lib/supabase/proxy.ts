@@ -63,6 +63,11 @@ export async function updateSession(request: NextRequest) {
     return supabaseResponse;
   }
 
+  const publicRoutes = [
+    '/product-detail',
+    '/product-listing'
+  ];
+
   // routes that require login
   const protectedRoutes = [
     "/buyer",
@@ -84,7 +89,9 @@ export async function updateSession(request: NextRequest) {
 
   // role check
   if (user) {
-    const allowedRoutes = roleRoutes[role] || [];
+    const allowedRoutes = roleRoutes[role].concat(publicRoutes) || [];
+
+    // console.log(allowedRoutes);
 
     const hasAccess = allowedRoutes.some((route) =>
       pathname.startsWith(route),

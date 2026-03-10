@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ThemeSwitcher } from "./theme-switcher";
 import NavSearchBar from "./NavSearchBar";
 import ShoppingCartBtn from "./ShoppingCartBtn";
+import { Button } from "./ui/button";
 
 // TODO: Disable Nav Search Bar if user is in dashboard or just have a whole nother NavBar that is customized for seller, same with admin
 
