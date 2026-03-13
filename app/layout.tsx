@@ -4,7 +4,6 @@ import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { AuthProvider } from "@/components/AuthProvider";
 import { Inter } from "next/font/google";
-import NavBar from "@/components/NavBarSeller";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -34,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
-      <body className={`${geistSans.className} antialiased overscroll-none`}>
+      <body className={`${geistSans.className} antialiased overscroll-none h-screen`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

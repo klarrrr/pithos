@@ -1,6 +1,7 @@
 import NavBar from '@/components/NavBar'
 import { ReactNode } from 'react'
 import { Suspense } from 'react'
+import Footer from '@/components/Footer'
 
 const layout = ({children} : {children : ReactNode}) => {
   return (
@@ -9,6 +10,9 @@ const layout = ({children} : {children : ReactNode}) => {
             <NavBar />
         </Suspense>
         <main>{children}</main>
+         <Suspense>
+            <Footer />
+          </Suspense>
     </div>
   )
 }

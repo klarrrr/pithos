@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { LogoutButton } from "./logout-button";
 import { useAuth } from "./AuthProvider";
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -43,7 +42,6 @@ export function AuthButton() {
           {user.email?.[0]?.toUpperCase() ?? "?"}
         </div>
       )}
-      <LogoutButton />
     </div>
   ) : (
     <div className="flex gap-2">

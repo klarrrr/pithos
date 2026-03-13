@@ -59,6 +59,7 @@ return (
         width={60}
         height={60}
         alt="Pithos Logo"
+        className=""
     />
     <span className="font-inter tracking-wide">PITHOS</span>
     </div>

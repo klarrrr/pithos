@@ -61,15 +61,15 @@ export function SignUpForm({
 
   return (
     <div className={cn("flex flex-col gap-6 items-center", className)} {...props}>
-        <div className="flex items-center gap-3 text-4xl font-bold uppercase">
+      <div className="flex items-center gap-3 text-4xl font-bold uppercase">
         <Image
-        src="/pithos/pithos-logo.svg"
-        width={60}
-        height={60}
-        alt="Pithos Logo"
-         />
-        <span className="font-inter tracking-wide">PITHOS</span>
-    </div>
+          src="/pithos/pithos-logo.svg"
+          width={60}
+          height={60}
+          alt="Pithos Logo"
+        />
+          <span className="font-inter tracking-wide text-foreground">PITHOS</span>
+      </div>
       <Card className="w-full">
         <CardHeader>
             <Link href="/" className="text-xs text-muted-foreground hover:underline w-fit mb-4 block">

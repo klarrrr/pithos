@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link"
 import { AuthButton } from "@/components/AuthButtonAdmin";
 import { Suspense } from "react";
@@ -5,15 +7,19 @@ import Image from "next/image";
 import { ThemeSwitcher } from "./theme-switcher";
 import NavSearchBar from "@/components/NavSearchBar";
 import ShoppingCartBtn from "./ShoppingCartBtn";
+import { isCurrentRouteRBACProtected } from "@/lib/supabase/site_routes";
+import { usePathname } from "next/navigation";
+import SwitchToDBorHomeBtn from "./SwitchToDBorHomeBtn";
 
 
-const NavBar = async () => {
+const NavBar = ({role} : {role : string}) => {
     const logoSize = 16;
+    const pathname = usePathname();
 
     // if (loading) return <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16 dark:bg-[#0F0F0F] bg-[#0F0F0F]">Loading...</nav>
 
     return (
-    <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16 dark:bg-[#0F0F0F] bg-[#0F0F0F] sticky">
+    <nav className="w-full flex justify-center border-b border-b-secondary h-16 dark:bg-[#0F0F0F] bg-[#0F0F0F] sticky">
         <div className="w-full flex justify-between items-center p-3 px-5 text-sm">
 
             {/* Logo Brand */}
@@ -25,11 +31,17 @@ const NavBar = async () => {
                 </Link>
             </div>
 
+            <div className="flex gap-5 items-center">
+                {/* TODO: Make dynamic later */}
+                {!isCurrentRouteRBACProtected(pathname, role) ? <NavSearchBar/> : ''}
+            </div>
+
             {/* Sign Ups and Stuff */}
 
             <div className="flex gap-2 items-center">    
                 <ThemeSwitcher/>
                 <ShoppingCartBtn />
+                <SwitchToDBorHomeBtn role={role} DBLink="/admin/admin-dashboard" homePageLink="/"/>
                 <Suspense>
                     <AuthButton />
                 </Suspense>

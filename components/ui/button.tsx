@@ -1,7 +1,8 @@
+"use client";
+
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
@@ -51,10 +52,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
-      />
+      >
+      </Comp>
     );
   },
 );
 Button.displayName = "Button";
+
+
+// on mouse over - count for 1 - display tooltip opacity 1
+// on mouse leave - tooltip opacity 0
 
 export { Button, buttonVariants };

@@ -43,7 +43,6 @@ export function AuthButton() {
           {user.email?.[0]?.toUpperCase() ?? "?"}
         </div>
       )}
-      <LogoutButton />
     </div>
   ) : (
     <div className="flex gap-2">

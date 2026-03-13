@@ -19,7 +19,7 @@ const NavBarBuyer = () => {
 
     return (
         <>
-            <nav className="w-full lg:flex justify-center border-b border-b-foreground/10 h-16 dark:bg-[#0F0F0F] bg-[#0F0F0F] sticky hidden">
+            <nav className="w-full lg:flex justify-center border-b border-b-secondary h-16 dark:bg-[#0F0F0F] bg-[#0F0F0F] sticky hidden">
                 <div className="w-full flex justify-between items-center p-3 px-5 text-sm">
 
                     {/* Logo Brand */}

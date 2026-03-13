@@ -1,11 +1,12 @@
-import NavBar from '@/components/NavBarSeller'
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
+import SuspendedNav from '@/components/SuspendedNav'
+import SellerMainLayout from '@/components/SellerMainLayout'
 
 const layout = ({children} : {children : ReactNode}) => {
   return (
-    <div className='flex-1 w-full flex flex-col gap-20 items-center'>
-        <NavBar/>
-        <main>{children}</main>
+    <div className='h-full w-full flex flex-col items-center'>
+        <SuspendedNav/>
+        <SellerMainLayout children={children} />
     </div>
   )
 }

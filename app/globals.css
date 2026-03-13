@@ -26,8 +26,8 @@
     --destructive: #C1121F; /* strong red */
     --destructive-foreground: #F5F5F5; /* almost white */
 
-    --border: #EDEDED; /* light gray border */
-    --input: #EDEDED; /* light gray input background/border */
+    --border: #CFCFCF; /* light gray border */
+    --input: #CFCFCF; /* light gray input background/border */
 
     --ring: #0F0F0F; /* almost black focus ring */
 

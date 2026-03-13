@@ -1,19 +1,13 @@
-import { ArrowLeft } from '@deemlol/next-icons'
+import { ArrowLeft } from 'lucide-react'
 import ItemsInCartContainer from '@/components/ItemsInCartContainer'
-import NavBar from '@/components/NavBar'
 import ShopCheckoutContainer from '@/components/ShopCheckoutContainer'
-import { Suspense } from 'react'
 import { Button } from '@/components/ui/button'
 import {ProductCard} from '@/components/ProductCard'
-import Footer from '@/components/Footer'
 import Link from 'next/link'
 
 const page = () => {
   return (
     <main className='flex flex-col gap-8'>
-      <Suspense>
-        <NavBar />
-      </Suspense>
       
       {/* Content */}
 
@@ -94,9 +88,7 @@ const page = () => {
 
       </div>
 
-      <Suspense>
-        <Footer />
-      </Suspense>
+     
     </main>
   )
 }
