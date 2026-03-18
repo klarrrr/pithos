@@ -1,7 +1,10 @@
 import { Hero } from "@/components/hero";
 import NavBar from "@/components/NavBar";
+import { HomeCategories } from "@/components/HomeCategories";
 import { Suspense } from "react";
 import Footer from "@/components/Footer";
+import {PopularProducts} from "@/components/PopularProducts";
+import {PopularBundles} from "@/components/PopularBundles";
 
 export default async function Home() {
   return (
@@ -9,13 +12,13 @@ export default async function Home() {
       <Suspense>
         <NavBar />
       </Suspense>
-      <div className="flex-1 w-full flex flex-col gap-20 items-center">
-        
-        <div className="flex-1 flex flex-col gap-20 max-w-5xl p-5">
-          <Hero />
-          <main className="flex-1 flex flex-col gap-6 px-4">
-            <h2 className="font-medium text-xl mb-4">Next steps</h2>
-            
+      <div className="flex-1 w-full flex flex-col gap-5 items-center">
+            <Hero />
+            <HomeCategories />
+            <PopularProducts />
+            <PopularBundles />
+        <div className="flex-1 flex flex-col gap-20 p-5">
+          <main className="flex-1 flex flex-col gap-6 items-center">        
           </main>
         </div>
 
