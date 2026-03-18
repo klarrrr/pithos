@@ -25,7 +25,9 @@ export function AuthProvider({children, initialSession}:{
 
         // Get session then set session and loading
 
-        supabase.auth.getSession().then(({data: { session }})=>{
+        supabase.auth.getSession().then(
+            ({data: { session }
+            })=>{
             setSession(session);
             setLoading(false);
         })

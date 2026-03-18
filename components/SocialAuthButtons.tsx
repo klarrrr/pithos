@@ -1,4 +1,3 @@
-import React from 'react'
 import SocialAuthButton from './SocialAuthButton';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
@@ -17,7 +16,7 @@ const providers : providerType[] = [
         name: "google",
         label: "Continue with Google",
         icon: "/soc-med-icons/google.svg",
-        size: 30,
+        size: 24,
     }
 ]
 

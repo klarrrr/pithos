@@ -1,17 +1,11 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { hasEnvVars } from "../utils";
+import { isProtectedRoute, getAllowedRoutes} from "./site_routes";
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   });
-
-  // If the env vars are not set, skip proxy check. You can remove this
-  // once you setup the project.
-  if (!hasEnvVars) {
-    return supabaseResponse;
-  }
 
   // With Fluid compute, don't put this client in a global environment
   // variable. Always create a new one on each request.
@@ -44,14 +38,37 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: If you remove getClaims() and you use server-side rendering
   // with the Supabase client, your users may be randomly logged out.
-  const { data } = await supabase.auth.getClaims();
-  const user = data?.claims;
-  const protectedRoutes = ["/account"];
-  
-  const isProtectedRoute = protectedRoutes.some(route=> request.nextUrl.pathname.startsWith(route),);
+  const { data : claims } = await supabase.auth.getClaims();
 
-  if(isProtectedRoute && !user){
+  const user = claims?.claims;
+
+  const role = user?.app_role;
+
+  const pathname = request.nextUrl.pathname;
+
+  // everyone can access main page
+  if (pathname === "/") {
+    return supabaseResponse;
+  }
+
+  // if not logged in
+  if (isProtectedRoute(pathname) && !user) {
     return NextResponse.redirect(new URL("/auth/login", request.url));
+  }
+
+  // role check
+  if (user) {
+    const allowedRoutes = getAllowedRoutes(role);
+
+    // console.log(allowedRoutes);
+
+    const hasAccess = allowedRoutes.some((route) =>
+      pathname.startsWith(route),
+    );
+
+    if (!hasAccess) {
+      return NextResponse.redirect(new URL("/unauthorized", request.url));
+    }
   }
  
 
