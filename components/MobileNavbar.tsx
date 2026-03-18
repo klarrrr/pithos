@@ -4,7 +4,8 @@ import NavSearchBar from "./NavSearchBar";
 import { ThemeSwitcher } from "./theme-switcher";
 import ShoppingCartBtn from "./ShoppingCartBtn";
 import { Suspense } from "react";
-import { AuthButton } from "./AuthButtonBuyer";
+import { AuthButton } from "./buyer/AuthButtonBuyer";
+import PithosLogo from "./PithosLogo";
 
 const MobileNavbar = ({open, setOpen} : {open : boolean, setOpen : (open : boolean) => void}) => {
     const logoSize = 32;
@@ -36,7 +37,7 @@ const MobileNavbar = ({open, setOpen} : {open : boolean, setOpen : (open : boole
     `}>
         <div className="flex gap-5 items-center font-semibold">
             <Link href={"/"} className="text-white font-bold uppercase flex flex-row gap-2 items-center">
-                <Image src={'/pithos/pithos-logo.svg'} width={logoSize} height={logoSize} alt="Pithos Logo" />
+                <PithosLogo size={24} color="white"/>
                 Pithos
             </Link>
         </div>

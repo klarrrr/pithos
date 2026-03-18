@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import SuspendedNav from '@/components/SuspendedNav'
-import SellerMainLayout from '@/components/AdminMainLayout'
+import SellerMainLayout from '@/components/admin/AdminMainLayout'
 
 const layout = ({children} : {children : ReactNode}) => {
   return (

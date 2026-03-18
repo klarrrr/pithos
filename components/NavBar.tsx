@@ -1,6 +1,6 @@
-import NavBarBuyer from "@/components/NavBarBuyer";
-import NavBarSeller from "./NavBarSeller";
-import NavBarAdmin from "./NavBarAdmin";
+import NavBarBuyer from "./buyer/NavBarBuyer";
+import NavBarSeller from "./seller/NavBarSeller";
+import NavBarAdmin from "./admin/NavBarAdmin";
 import { createClient } from "@/lib/supabase/server";
 
 const NavBar = async () => {

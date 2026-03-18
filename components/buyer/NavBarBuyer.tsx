@@ -1,15 +1,15 @@
 "use client"
 
 import Link from "next/link"
-import { AuthButton } from "@/components/AuthButtonBuyer";
+import { AuthButton } from "./AuthButtonBuyer";
 import { Suspense } from "react";
-import Image from "next/image";
-import { ThemeSwitcher } from "./theme-switcher";
+import { ThemeSwitcher } from "../theme-switcher";
 import NavSearchBar from "@/components/NavSearchBar";
-import ShoppingCartBtn from "./ShoppingCartBtn";
-import BurgerBtn from "./BurgerBtn";
+import ShoppingCartBtn from "../ShoppingCartBtn";
+import BurgerBtn from "../BurgerBtn";
 import { useState } from "react";
-import MobileNavbar from "./MobileNavbar";
+import MobileNavbar from "../MobileNavbar";
+import PithosLogo from "../PithosLogo";
 
 const NavBarBuyer = () => {
     const logoSize = 16;
@@ -26,7 +26,7 @@ const NavBarBuyer = () => {
                     
                     <div className="flex gap-5 items-center font-semibold">
                         <Link href={"/"} className="text-white font-bold uppercase flex flex-row gap-2 items-center">
-                            <Image src={'/pithos/pithos-logo.svg'} width={logoSize} height={logoSize} alt="Pithos Logo" />
+                            <PithosLogo size={24} color="white"/>
                             Pithos
                         </Link>
                     </div>

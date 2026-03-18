@@ -18,6 +18,7 @@ import { useState } from "react";
 import SocialAuthButtons from "./SocialAuthButtons";
 import Separator from "@/components/Separator";
 import Image from "next/image";
+import PithosLogo from "./PithosLogo";
 
 export function SignUpForm({
   className,
@@ -62,12 +63,7 @@ export function SignUpForm({
   return (
     <div className={cn("flex flex-col gap-6 items-center", className)} {...props}>
       <div className="flex items-center gap-3 text-4xl font-bold uppercase">
-        <Image
-          src="/pithos/pithos-logo.svg"
-          width={60}
-          height={60}
-          alt="Pithos Logo"
-        />
+          <PithosLogo size={60} color="foreground"/>
           <span className="font-inter tracking-wide text-foreground">PITHOS</span>
       </div>
       <Card className="w-full">

@@ -1,15 +1,16 @@
 "use client";
 
 import Link from "next/link"
-import { AuthButton } from "@/components/AuthButtonSeller";
+import { AuthButton } from "@/components/seller/AuthButtonSeller";
 import { Suspense } from "react";
 import Image from "next/image";
-import { ThemeSwitcher } from "./theme-switcher";
-import NavSearchBar from "./NavSearchBar";
-import ShoppingCartBtn from "./ShoppingCartBtn";
+import { ThemeSwitcher } from "../theme-switcher";
+import NavSearchBar from "../NavSearchBar";
+import ShoppingCartBtn from "../ShoppingCartBtn";
 import { usePathname } from "next/navigation";
 import { isCurrentRouteRBACProtected } from "@/lib/supabase/site_routes";
-import SwitchToDBorHomeBtn from "./SwitchToDBorHomeBtn";
+import SwitchToDBorHomeBtn from "../SwitchToDBorHomeBtn";
+import PithosLogo from "../PithosLogo";
 
 // TODO: Disable Nav Search Bar if user is in dashboard or just have a whole nother NavBar that is customized for seller, same with admin
 
@@ -36,7 +37,7 @@ const NavBarSeller = ({role} : {role : string}) => {
             
             <div className="flex gap-5 items-center font-semibold">
                 <Link href={"/"} className="text-white font-bold uppercase flex flex-row gap-2 items-center">
-                    <Image src={'/pithos/pithos-logo.svg'} width={logoSize} height={logoSize} alt="Pithos Logo" />
+                    <PithosLogo size={24} color="white"/>
                     Pithos
                 </Link>
             </div>

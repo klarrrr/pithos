@@ -1,15 +1,16 @@
 "use client";
 
 import Link from "next/link"
-import { AuthButton } from "@/components/AuthButtonAdmin";
+import { AuthButton } from "@/components/admin/AuthButtonAdmin";
 import { Suspense } from "react";
 import Image from "next/image";
-import { ThemeSwitcher } from "./theme-switcher";
+import { ThemeSwitcher } from "../theme-switcher";
 import NavSearchBar from "@/components/NavSearchBar";
-import ShoppingCartBtn from "./ShoppingCartBtn";
+import ShoppingCartBtn from "../ShoppingCartBtn";
 import { isCurrentRouteRBACProtected } from "@/lib/supabase/site_routes";
 import { usePathname } from "next/navigation";
-import SwitchToDBorHomeBtn from "./SwitchToDBorHomeBtn";
+import SwitchToDBorHomeBtn from "../SwitchToDBorHomeBtn";
+import PithosLogo from "../PithosLogo";
 
 
 const NavBar = ({role} : {role : string}) => {
@@ -26,7 +27,7 @@ const NavBar = ({role} : {role : string}) => {
             
             <div className="flex gap-5 items-center font-semibold">
                 <Link href={"/"} className="text-white font-bold uppercase flex flex-row gap-2 items-center">
-                    <Image src={'/pithos/pithos-logo.svg'} width={logoSize} height={logoSize} alt="Pithos Logo" />
+                    <PithosLogo size={25} color="white"/>
                     Pithos
                 </Link>
             </div>
