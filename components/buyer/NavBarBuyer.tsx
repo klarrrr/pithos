@@ -19,14 +19,14 @@ const NavBarBuyer = () => {
 
     return (
         <>
-            <nav className="w-full lg:flex justify-center border-b border-b-secondary h-16 dark:bg-[#0F0F0F] bg-[#0F0F0F] sticky hidden">
+            <nav className="w-full lg:flex justify-center border-b border-b-mute h-16 bg-primary-foreground sticky hidden">
                 <div className="w-full flex justify-between items-center p-3 px-5 text-sm">
 
                     {/* Logo Brand */}
                     
                     <div className="flex gap-5 items-center font-semibold">
-                        <Link href={"/"} className="text-white font-bold uppercase flex flex-row gap-2 items-center">
-                            <PithosLogo size={24} color="white"/>
+                        <Link href={"/"} className="text-foreground font-bold uppercase flex flex-row gap-2 items-center">
+                            <PithosLogo size={24} color="foreground"/>
                             Pithos
                         </Link>
                     </div>

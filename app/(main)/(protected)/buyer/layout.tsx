@@ -1,4 +1,4 @@
-import NavBarBuyer from '@/components/NavBarBuyer'
+import NavBarBuyer from '@/components/buyer/NavBarBuyer'
 import React, { ReactNode } from 'react'
 
 const layout = ({children} : {children : ReactNode}) => {

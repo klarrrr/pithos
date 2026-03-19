@@ -22,7 +22,7 @@ const SwitchToDBorHomeBtn = ({role, DBLink, homePageLink} : {role : string, DBLi
         }
     }}>
         <Button variant="ghost" size={'sm'} >
-            {isProtected ? <Store size={16} className='text-muted-foreground'/> : <CircleGauge size={16} className='text-muted-foreground'/>}
+            {isProtected ? <><Store size={16} className=''/>Go to Public</> : <><CircleGauge size={16} className=''/>Go to Restricted</>}
         </Button>
         <button ></button>
     </Link>

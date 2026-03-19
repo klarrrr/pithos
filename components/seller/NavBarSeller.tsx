@@ -30,14 +30,14 @@ const NavBarSeller = ({role} : {role : string}) => {
     // if (loading) return <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16 dark:bg-[#0F0F0F] bg-[#0F0F0F]">Loading...</nav>
 
     return (
-    <nav className="w-full flex justify-center border-b border-b-secondary h-16 dark:bg-[#0F0F0F] bg-[#0F0F0F] sticky">
+    <nav className="w-full flex justify-center border-b border-b-mute h-16 bg-primary-foreground sticky">
         <div className="w-full flex justify-between items-center p-3 px-5 text-sm">
 
             {/* Logo Brand */}
             
             <div className="flex gap-5 items-center font-semibold">
-                <Link href={"/"} className="text-white font-bold uppercase flex flex-row gap-2 items-center">
-                    <PithosLogo size={24} color="white"/>
+                <Link href={"/"} className="text-foreground font-bold uppercase flex flex-row gap-2 items-center">
+                    <PithosLogo size={24} color="foreground"/>
                     Pithos
                 </Link>
             </div>

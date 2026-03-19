@@ -2,7 +2,6 @@ import SearchBar from "@/components/technical-components/SearchBar"
 import FilterBy from "@/components/technical-components/FilterBy"
 import SortBy from "@/components/technical-components/SortBy"
 import SearchButton from "@/components/technical-components/SearchButton"
-import { Card } from "@/components/ui/card"
 
 // TODO: It's probably for the best if the search button and the search bar are on the same component.
 
@@ -20,11 +19,11 @@ const page = () => {
       </div>
       <hr />
       <div className='flex gap-4'>
-          <Card className="w-full p-4">
-
-            <table className="*:*:*:border *:*:*:border-muted *:*:*:p-4 w-full" border={1}>
+          <div className="w-full p-4 bg-primary-foreground border border-muted rounded-lg">
+          <table className="*:*:*:border *:*:*:border-muted *:*:*:p-4 w-full bg-primary-foreground" border={1}>
               <thead>
                 <tr>
+                  <td><input type="checkbox" name="" id="" /></td>
                   <th>UUID</th>
                   <th>Email</th>
                   <th>Role</th>
@@ -35,6 +34,7 @@ const page = () => {
               </thead>
               <tbody>
                 <tr>
+                  <td><input type="checkbox" name="" id="" /></td>
                   <td>129616 182736 1293</td>
                   <td>klarenzcobie99@gmail.com</td>
                   <td>Admin</td>
@@ -43,6 +43,7 @@ const page = () => {
                   <td>Edit</td>
                 </tr>
                 <tr>
+                  <td><input type="checkbox" name="" id="" /></td>
                   <td>129616 182736 1293</td>
                   <td>klarenzcobie99@gmail.com</td>
                   <td>Admin</td>
@@ -51,6 +52,7 @@ const page = () => {
                   <td>Edit</td>
                 </tr>
                 <tr>
+                  <td><input type="checkbox" name="" id="" /></td>
                   <td>129616 182736 1293</td>
                   <td>klarenzcobie99@gmail.com</td>
                   <td>Admin</td>
@@ -59,6 +61,7 @@ const page = () => {
                   <td>Edit</td>
                 </tr>
                 <tr>
+                  <td><input type="checkbox" name="" id="" /></td>
                   <td>129616 182736 1293</td>
                   <td>klarenzcobie99@gmail.com</td>
                   <td>Admin</td>
@@ -67,6 +70,7 @@ const page = () => {
                   <td>Edit</td>
                 </tr>
                 <tr>
+                  <td><input type="checkbox" name="" id="" /></td>
                   <td>129616 182736 1293</td>
                   <td>klarenzcobie99@gmail.com</td>
                   <td>Admin</td>
@@ -75,6 +79,7 @@ const page = () => {
                   <td>Edit</td>
                 </tr>
                 <tr>
+                  <td><input type="checkbox" name="" id="" /></td>
                   <td>129616 182736 1293</td>
                   <td>klarenzcobie99@gmail.com</td>
                   <td>Admin</td>
@@ -83,6 +88,7 @@ const page = () => {
                   <td>Edit</td>
                 </tr>
                 <tr>
+                  <td><input type="checkbox" name="" id="" /></td>
                   <td>129616 182736 1293</td>
                   <td>klarenzcobie99@gmail.com</td>
                   <td>Admin</td>
@@ -91,6 +97,7 @@ const page = () => {
                   <td>Edit</td>
                 </tr>
                 <tr>
+                  <td><input type="checkbox" name="" id="" /></td>
                   <td>129616 182736 1293</td>
                   <td>klarenzcobie99@gmail.com</td>
                   <td>Admin</td>
@@ -99,6 +106,7 @@ const page = () => {
                   <td>Edit</td>
                 </tr>
                 <tr>
+                  <td><input type="checkbox" name="" id="" /></td>
                   <td>129616 182736 1293</td>
                   <td>klarenzcobie99@gmail.com</td>
                   <td>Admin</td>
@@ -107,6 +115,7 @@ const page = () => {
                   <td>Edit</td>
                 </tr>
                 <tr>
+                  <td><input type="checkbox" name="" id="" /></td>
                   <td>129616 182736 1293</td>
                   <td>klarenzcobie99@gmail.com</td>
                   <td>Admin</td>
@@ -115,6 +124,7 @@ const page = () => {
                   <td>Edit</td>
                 </tr>
                 <tr>
+                  <td><input type="checkbox" name="" id="" /></td>
                   <td>129616 182736 1293</td>
                   <td>klarenzcobie99@gmail.com</td>
                   <td>Admin</td>
@@ -124,7 +134,7 @@ const page = () => {
                 </tr>
               </tbody>
             </table>
-          </Card>
+          </div>
       </div>
     </div>
   )

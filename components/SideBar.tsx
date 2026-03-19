@@ -6,7 +6,7 @@ import { JSX } from "react";
 const SideBar = ({links, settingLink} : {links : Array<JSX.Element>, settingLink : JSX.Element}) => {
     const linksGap = 8;
     return (
-    <aside className='bg-[#0f0f0f] text-white border-r border-r-border h-full p-8 px-5 w-[300px] flex flex-col justify-between text-sm'>
+    <aside className='bg-primary-foreground text-primary border-r border-r-border h-full p-8 px-5 w-[300px] flex flex-col justify-between text-sm'>
         <div className={`flex flex-col gap-${linksGap}`}>
             {links}
         </div>

@@ -20,19 +20,19 @@ const NavBar = ({role} : {role : string}) => {
     // if (loading) return <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16 dark:bg-[#0F0F0F] bg-[#0F0F0F]">Loading...</nav>
 
     return (
-    <nav className="w-full flex justify-center border-b border-b-secondary h-16 dark:bg-[#0F0F0F] bg-[#0F0F0F] sticky">
-        <div className="w-full flex justify-between items-center p-3 px-5 text-sm">
+    <nav className="w-full flex justify-center border-b border-b-mute h-16 bg-primary-foreground sticky">
+        <div className="w-full flex justify-between items-center h-full py-2 px-5 text-sm">
 
             {/* Logo Brand */}
             
-            <div className="flex gap-5 items-center font-semibold">
-                <Link href={"/"} className="text-white font-bold uppercase flex flex-row gap-2 items-center">
-                    <PithosLogo size={25} color="white"/>
+            <div className="flex gap-5 items-center font-semibold h-full">
+                <Link href={"/"} className="text-foreground font-bold uppercase flex flex-row gap-2 items-center">
+                    <PithosLogo size={25} color="foreground"/>
                     Pithos
                 </Link>
             </div>
 
-            <div className="flex gap-5 items-center">
+            <div className="flex gap-5 items-center h-full">
                 {/* TODO: Make dynamic later */}
                 {!isCurrentRouteRBACProtected(pathname, role) ? <NavSearchBar/> : ''}
             </div>

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 
 const page = () => {
   return (
-    <div className='flex flex-col p-8 bg-background w-full gap-8'> 
+    <div className='flex flex-col p-8 bg-background w-full gap-4'> 
       <h1 className='font-bold text-3xl'>Account Settings</h1>
       <hr />
       <div className='flex gap-4'>
@@ -14,7 +14,8 @@ const page = () => {
             <p>Provide a better customer service by setting up a hassle-free online payment method.</p>
           </div>
           <div className='flex flex-col gap-4 w-3/4'>
-            <Card className='p-4'>
+
+            <div className='w-full p-4 bg-primary-foreground border border-muted rounded-lg'>
               <h2 className='font-semibold flex gap-2 text-xl items-center'><PayPal/>PayPal</h2>
               <ul className='list-disc p-4 px-8'>
                 <li>
@@ -28,8 +29,9 @@ const page = () => {
                 </li>
               </ul>
               <OnboardingBtn content='Connect With PayPal'  />
-            </Card>
-            <Card className='p-4'>
+            </div>
+
+            <div className='w-full p-4 bg-primary-foreground border border-muted rounded-lg'>
               <h2 className='font-semibold flex gap-2 text-xl items-center'>GCash</h2>
               <ul className='list-disc p-4 px-8'>
                 <li>
@@ -45,7 +47,8 @@ const page = () => {
               <Button variant={'disabled'}>
                   Connect With GCash    
               </Button>
-            </Card>
+            </div>
+
           </div>
       </div>
       <hr />
