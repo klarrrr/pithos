@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 
 const page = () => {
   return (
-    <div className='flex flex-col p-8 bg-background w-full gap-4'> 
+    <div className='flex flex-col p-4 bg-background w-full gap-4'> 
       <h1 className='font-bold text-3xl'>Account Settings</h1>
       <hr />
       <div className='flex gap-4'>
