@@ -37,6 +37,8 @@
     --chart-4: #FF6969; /* warm yellow */ 
     --chart-5: #FF8888; /* bright orange */
 
+    --success: #16bf48;
+
     --radius: 0.5rem; /* border radius */
   }
 
@@ -75,6 +77,8 @@
     --chart-3: #FF4D4D; /* dark desaturated blue */
     --chart-4: #FF6969; /* warm yellow */ 
     --chart-5: #FF8888; /* bright orange */
+
+    --success: #16bf48;
   }
 }
 

@@ -1,5 +1,6 @@
 import TitleInputForm from "./TitleInputForm"
 import { Button } from "../ui/button"
+import DeleteButton from "@/components/banner-announcements/DeleteButton"
 
 const ConfigureSmallBanner = () => {
   return (
@@ -20,14 +21,13 @@ const ConfigureSmallBanner = () => {
 
         {/* Save or Delete */}
         <div className="flex justify-end gap-2">
-            <Button variant={"ghost"}>
-                Delete
-            </Button>
+            <DeleteButton/>
 
             <Button variant={"default"}>
                 Save
             </Button>
         </div>
+
     </div>
   )
 }

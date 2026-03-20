@@ -51,6 +51,7 @@ export default {
           "4": "var(--chart-4)",
           "5": "var(--chart-5)",
         },
+        success: "var(--success)",
       },
       borderRadius: {
         lg: "var(--radius)",

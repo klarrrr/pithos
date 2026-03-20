@@ -1,5 +1,7 @@
 import TitleInputForm from "./TitleInputForm"
 import { Button } from "../ui/button"
+import TitleInputUpload from "./TitleInputUpload"
+import DeleteButton from "@/components/banner-announcements/DeleteButton"
 
 const ConfigureBigBanner = () => {
   return (
@@ -11,16 +13,21 @@ const ConfigureBigBanner = () => {
         <div className="flex flex-row gap-2 gap-y-4 flex-wrap">
             <TitleInputForm title="Small Upper Title" placeholder="Enter Small Upper Title"/>
             <TitleInputForm title="Big Middle Title" placeholder="Enter Big Middle Title" />
-            <TitleInputForm title="Description" placeholder="Enter Description" boxWidth="500"/>
+            <TitleInputForm title="Description" placeholder="Enter Description" boxWidth="w-[500px]"/>
             <TitleInputForm title="Call To Action Button" placeholder="Enter Call To Action Button" />
             <TitleInputForm title="Call To Action Link" placeholder="Enter Call To Action Link" />
         </div>
 
+        {/* Image */}
+
+        <div className="flex flex-row gap-2 gap-y-4">
+            <TitleInputUpload title="Upload Image Banner" placeholder="Enter Image URL here" />
+        </div>
+
+
         {/* Save or Delete */}
         <div className="flex justify-end gap-2">
-            <Button variant={"ghost"}>
-                Delete
-            </Button>
+            <DeleteButton/>
 
             <Button variant={"default"}>
                 Save

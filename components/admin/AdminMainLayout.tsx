@@ -44,7 +44,7 @@ const AdminMainLayout = ({children} : {children : ReactNode}) => {
   </Link>;
 
   return (
-    <main className='flex w-screen h-full'>
+    <main className='flex w-screen h-full min-h-0'>
         <SideBar links={links} settingLink={settingLink}/>
         {children}
     </main>

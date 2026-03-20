@@ -1,5 +1,4 @@
 import { ReactNode } from 'react'
-import { Home } from 'lucide-react'
 
 const CardStat = ({header, subHeader, icon} : {header : string, subHeader : string, icon : ReactNode}) => {
   return (
