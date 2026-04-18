@@ -6,6 +6,8 @@ import { useAuth } from "../AuthProvider";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
+// This component is used in the header of the seller dashboard to show the user's avatar and provide links to account settings, or show sign in/up buttons if not authenticated.
+
 export function AuthButton() {
   const { user, loading } = useAuth();
   const [mounted, setMounted] = useState(false);
