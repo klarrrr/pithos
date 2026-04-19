@@ -17,7 +17,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import SocialAuthButtons from "./SocialAuthButtons";
 import Separator from "@/components/Separator";
-import Image from "next/image";
 import PithosLogo from "./PithosLogo";
 
 export function SignUpForm({
@@ -48,7 +47,7 @@ export function SignUpForm({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/protected`,
+          emailRedirectTo: `${window.location.origin}/`,
         },
       });
       if (error) throw error;
