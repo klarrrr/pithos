@@ -1,89 +1,87 @@
+import { createAdminClient } from "./admin";
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { isProtectedRoute, getAllowedRoutes} from "./site_routes";
+import { isProtectedRoute, getAllowedRoutes } from "./site_routes";
 
 export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request,
-  });
+    let supabaseResponse = NextResponse.next({ request });
 
-  // With Fluid compute, don't put this client in a global environment
-  // variable. Always create a new one on each request.
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value),
-          );
-          supabaseResponse = NextResponse.next({
-            request,
-          });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options),
-          );
-        },
-      },
-    },
-  );
-
-  // Do not run code between createServerClient and
-  // supabase.auth.getClaims(). A simple mistake could make it very hard to debug
-  // issues with users being randomly logged out.
-
-  // IMPORTANT: If you remove getClaims() and you use server-side rendering
-  // with the Supabase client, your users may be randomly logged out.
-  const { data : claims } = await supabase.auth.getClaims();
-
-  const user = claims?.claims;
-
-  const role = user?.app_role;
-
-  const pathname = request.nextUrl.pathname;
-
-  // everyone can access main page
-  if (pathname === "/") {
-    return supabaseResponse;
-  }
-
-  // if not logged in
-  if (isProtectedRoute(pathname) && !user) {
-    return NextResponse.redirect(new URL("/auth/login", request.url));
-  }
-
-  // role check
-  if (user) {
-    const allowedRoutes = getAllowedRoutes(role);
-
-    // console.log(allowedRoutes);
-
-    const hasAccess = allowedRoutes.some((route) =>
-      pathname.startsWith(route),
+    const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+        {
+            cookies: {
+                getAll() {
+                    return request.cookies.getAll();
+                },
+                setAll(cookiesToSet) {
+                    cookiesToSet.forEach(({ name, value }) =>
+                        request.cookies.set(name, value)
+                    );
+                    supabaseResponse = NextResponse.next({ request });
+                    cookiesToSet.forEach(({ name, value, options }) =>
+                        supabaseResponse.cookies.set(name, value, options)
+                    );
+                },
+            },
+        }
     );
 
-    if (!hasAccess) {
-      return NextResponse.redirect(new URL("/unauthorized", request.url));
+    const supabaseAdmin = createAdminClient();
+
+    // Get claims safely
+    const { data: claimsData } = await supabase.auth.getClaims();
+    const claims = claimsData?.claims;
+    const uid = claims?.sub;   // This can still be undefined
+
+    console.log("UID from claims:", uid);
+
+    let role: string | null = null;
+
+    // Only query the users table if we actually have a valid uid
+    if (uid) {
+        const { data: roleRes, error } = await supabaseAdmin
+            .from('users')
+            .select('user_role')
+            .eq('id', uid)
+            .single();
+
+        if (error) {
+            console.error("Error fetching user role:", error);
+            // Don't throw here in middleware — it can break navigation
+            // Just continue with role = null (treat as no special role)
+        } else {
+            role = roleRes?.user_role || null;
+            console.log("User role:", role);
+        }
+    } else {
+        console.log("No UID found — unauthenticated or invalid token");
     }
-  }
- 
 
-  // IMPORTANT: You *must* return the supabaseResponse object as it is.
-  // If you're creating a new response object with NextResponse.next() make sure to:
-  // 1. Pass the request in it, like so:
-  //    const myNewResponse = NextResponse.next({ request })
-  // 2. Copy over the cookies, like so:
-  //    myNewResponse.cookies.setAll(supabaseResponse.cookies.getAll())
-  // 3. Change the myNewResponse object to fit your needs, but avoid changing
-  //    the cookies!
-  // 4. Finally:
-  //    return myNewResponse
-  // If this is not done, you may be causing the browser and server to go out
-  // of sync and terminate the user's session prematurely!
+    const pathname = request.nextUrl.pathname;
 
-  return supabaseResponse;
+    // Public route — everyone can access
+    if (pathname === "/") {
+        return supabaseResponse;
+    }
+
+    // Protected route but not logged in
+    if (isProtectedRoute(pathname) && !uid) {
+        return NextResponse.redirect(new URL("/auth/login", request.url));
+    }
+
+    // Role-based access check (only if logged in)
+    if (uid) {
+        const allowedRoutes = getAllowedRoutes(role || "");
+
+        const hasAccess = allowedRoutes.some((route) =>
+            pathname.startsWith(route)
+        );
+
+        if (!hasAccess) {
+            return NextResponse.redirect(new URL("/unauthorized", request.url));
+        }
+    }
+
+    return supabaseResponse;
 }
