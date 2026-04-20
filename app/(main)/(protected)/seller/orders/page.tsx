@@ -29,7 +29,6 @@ const page = () => {
                             <table className="*:*:*:border *:*:*:border-muted *:*:*:p-4 w-full bg-primary-foreground" border={1}>
                                 <thead>
                                     <tr>
-                                        <td><input type="checkbox" name="" id="" /></td>
                                         <th>Transaction ID</th>
                                         <th>Buyer ID</th>
                                         <th>Product ID</th>
@@ -41,7 +40,6 @@ const page = () => {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><input type="checkbox" name="" id="" /></td>
                                         <td>129616 182736 1293</td>
                                         <td>98547 1086 95816</td>
                                         <td>1231 98167 9817698</td>
@@ -51,7 +49,6 @@ const page = () => {
                                         <td><Button variant="link" className="text-red-500 hover:text-red-600 px-0">View Details</Button></td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" name="" id="" /></td>
                                         <td>129616 182736 1293</td>
                                         <td>98547 1086 95816</td>
                                         <td>1231 98167 9817698</td>
@@ -61,7 +58,6 @@ const page = () => {
                                         <td><Button variant="link" className="text-red-500 hover:text-red-600 px-0">View Details</Button></td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" name="" id="" /></td>
                                         <td>129616 182736 1293</td>
                                         <td>98547 1086 95816</td>
                                         <td>1231 98167 9817698</td>
@@ -71,7 +67,6 @@ const page = () => {
                                         <td><Button variant="link" className="text-red-500 hover:text-red-600 px-0">View Details</Button></td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" name="" id="" /></td>
                                         <td>129616 182736 1293</td>
                                         <td>98547 1086 95816</td>
                                         <td>1231 98167 9817698</td>
@@ -81,7 +76,6 @@ const page = () => {
                                         <td><Button variant="link" className="text-red-500 hover:text-red-600 px-0">View Details</Button></td>
                                     </tr>
                                     <tr>
-                                        <td><input type="checkbox" name="" id="" /></td>
                                         <td>129616 182736 1293</td>
                                         <td>98547 1086 95816</td>
                                         <td>1231 98167 9817698</td>
