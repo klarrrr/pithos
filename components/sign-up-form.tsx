@@ -16,7 +16,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import SocialAuthButtons from "./SocialAuthButtons";
 import Separator from "@/components/Separator";
-import Image from "next/image";
 import PithosLogo from "./PithosLogo";
 import { validatePassword, PASSWORD_RULES } from "@/lib/auth/password-rules";
 

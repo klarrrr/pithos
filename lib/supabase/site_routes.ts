@@ -2,8 +2,8 @@
 
 const roleRoutes : Record<string, Array<string>> = {
     buyer: ["/buyer", "/account", "/shopping-cart"],
-    seller: ["/seller", "/account", "/shopping-cart", "/seller-dashboard", "/add-asset", "/creations", "/orders", "/success-onboarding"],
-    admin: ["/admin", "/account", "/admin-dashboard", "/shopping-cart", "/manage-orders", "/manage-products", "/manage-users", "/payment-gateways", "/reviews-ratings", "/site-content"],
+    seller: ["/seller", "/account", "/shopping-cart", "/seller-dashboard", "/assets", "/orders", "/success-onboarding"],
+    admin: ["/admin", "/account", "/admin-dashboard", "/shopping-cart", "/manage-orders", "/manage-products", "/buyers", "/sellers", "/payment-gateways", "/reviews-ratings", "/site-content"],
 };
 
 const publicRoutes = [
@@ -21,8 +21,7 @@ const protectedRoutes = [
     "/shopping-cart",
     "/admin-dashboard",
     "/seller-dashboard",
-    "/add-asset", 
-    "/creations", 
+    "/assets", 
     "orders", 
     "/manage-orders", 
     "/manage-products", 
@@ -30,6 +29,8 @@ const protectedRoutes = [
     "/payment-gateways", 
     "/reviews-ratings", 
     "/site-content",
+    "/buyers",
+    "/sellers"
 ];
 
 // functions

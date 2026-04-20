@@ -10,13 +10,9 @@ const SellerMainLayout = ({children} : {children : ReactNode}) => {
       <Home size={iconSize}/>
       Dashboard
     </Link>,
-    <Link key={'2'} className="hover:bg-accent hover:text-white p-2 rounded-md items-center flex gap-4" href={'/seller/add-asset'}>
+    <Link key={'2'} className="hover:bg-accent hover:text-white p-2 rounded-md items-center flex gap-4" href={'/seller/assets'}>
       <PackagePlus size={iconSize}/>
-      Add
-     Asset</Link>,
-    <Link key={'3'} className="hover:bg-accent hover:text-white p-2 rounded-md items-center flex gap-4" href={'/seller/creations'}>
-      <Boxes size={iconSize}/>
-      Creations
+      Assets
     </Link>,
     <Link key={'4'} className="hover:bg-accent hover:text-white p-2 rounded-md items-center flex gap-4" href={'/seller/orders'}>
       <Notebook size={iconSize}/>

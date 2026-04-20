@@ -21,7 +21,7 @@ const providers : providerType[] = [
 ]
 
 const SocialAuthButtons = () => {
-    const handleOAuthLogin = async(provider:provider)=>{
+    const handleOAuthLogin = async( provider : provider )=>{
         const supabase = createClient();
         await supabase.auth.signInWithOAuth({
             provider,

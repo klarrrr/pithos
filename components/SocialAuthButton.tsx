@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { Button } from './ui/button';
 
 interface SocialButtonProps {
@@ -8,7 +8,7 @@ interface SocialButtonProps {
 
 const SocialAuthButton = ({children, action}: SocialButtonProps) => {
   return (
-    <Button onClick={action} variant={'outline'} className='w-full'>
+    <Button type='button' onClick={action} variant={'outline'} className='w-full'>
         {children}
     </Button>
   )
