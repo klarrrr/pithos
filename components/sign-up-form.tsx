@@ -1,7 +1,6 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,21 +18,28 @@ import SocialAuthButtons from "./SocialAuthButtons";
 import Separator from "@/components/Separator";
 import Image from "next/image";
 import PithosLogo from "./PithosLogo";
+import { validatePassword, PASSWORD_RULES } from "@/lib/auth/password-rules";
 
 export function SignUpForm({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>){
+}: React.HTMLAttributes<HTMLDivElement>) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  const handlePasswordChange = (value: string) => {
+    setPassword(value);
+    const errors = validatePassword(value);
+    setPasswordErrors(errors);
+  };
+
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    const supabase = createClient();
     setIsLoading(true);
     setError(null);
 
@@ -43,16 +49,27 @@ export function SignUpForm({
       return;
     }
 
+    const validationErrors = validatePassword(password);
+    if (validationErrors.length > 0) {
+      setError(`Password must contain: ${validationErrors.join(', ')}.`);
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/protected`,
-        },
+      const response = await fetch('/api/auth/sign-up', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
       });
-      if (error) throw error;
-      router.push("/auth/sign-up-success");
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || 'Registration failed');
+      }
+
+      router.push("/auth/login");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
@@ -63,16 +80,16 @@ export function SignUpForm({
   return (
     <div className={cn("flex flex-col gap-6 items-center", className)} {...props}>
       <div className="flex items-center gap-3 text-4xl font-bold uppercase">
-          <PithosLogo size={60} color="foreground"/>
-          <span className="font-inter tracking-wide text-foreground">PITHOS</span>
+        <PithosLogo size={60} color="foreground" />
+        <span className="font-inter tracking-wide text-foreground">PITHOS</span>
       </div>
       <Card className="w-full">
         <CardHeader>
-            <Link href="/" className="text-xs text-muted-foreground hover:underline w-fit mb-4 block">
-              &lt; Return
-            </Link>
-            <CardTitle className="text-2xl">Sign up</CardTitle>
-            <CardDescription>Create a new account</CardDescription>
+          <Link href="/" className="text-xs text-muted-foreground hover:underline w-fit mb-4 block">
+            &lt; Return
+          </Link>
+          <CardTitle className="text-2xl">Sign up</CardTitle>
+          <CardDescription>Create a new account</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignUp} noValidate>
@@ -98,8 +115,27 @@ export function SignUpForm({
                   placeholder="Enter your password"
                   required
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => handlePasswordChange(e.target.value)}
                 />
+                {password && (
+                  <div className="mt-2 space-y-1 text-xs">
+                    <div className={password.length >= PASSWORD_RULES.minLength ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+                      {password.length >= PASSWORD_RULES.minLength ? "✓" : "✗"} At least {PASSWORD_RULES.minLength} characters
+                    </div>
+                    <div className={PASSWORD_RULES.requireUppercase && /[A-Z]/.test(password) ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+                      {PASSWORD_RULES.requireUppercase && /[A-Z]/.test(password) ? "✓" : "✗"} At least 1 uppercase letter
+                    </div>
+                    <div className={PASSWORD_RULES.requireLowercase && /[a-z]/.test(password) ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+                      {PASSWORD_RULES.requireLowercase && /[a-z]/.test(password) ? "✓" : "✗"} At least 1 lowercase letter
+                    </div>
+                    <div className={PASSWORD_RULES.requireNumber && /[0-9]/.test(password) ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+                      {PASSWORD_RULES.requireNumber && /[0-9]/.test(password) ? "✓" : "✗"} At least 1 number
+                    </div>
+                    <div className={PASSWORD_RULES.requireSpecial && /[^A-Za-z0-9]/.test(password) ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+                      {PASSWORD_RULES.requireSpecial && /[^A-Za-z0-9]/.test(password) ? "✓" : "✗"} At least 1 special character
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
@@ -116,15 +152,15 @@ export function SignUpForm({
               </div>
               {error && (
                 <div className=" rounded-lg border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-700 dark:bg-red-950 dark:text-red-100">
-                    {error}
+                  {error}
                 </div>
               )}
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Creating an account..." : "Sign up"}
               </Button>
             </div>
-            <Separator/>
-            <SocialAuthButtons/>
+            <Separator />
+            <SocialAuthButtons />
             <div className="mt-4 text-center text-sm">
               Already have an account?{" "}
               <Link href="/auth/login" className="underline underline-offset-4">

@@ -39,7 +39,10 @@ export function isProtectedRoute(pathName : string){
     return protectedRoutes.some((route) => pathName.startsWith(route));
 }
 
-export function getAllowedRoutes(role : string){
+export function getAllowedRoutes(role: string) {
+    if (!role || !roleRoutes[role]) {
+        return publicRoutes;
+    }
     return roleRoutes[role].concat(publicRoutes) || [];
 }
 
