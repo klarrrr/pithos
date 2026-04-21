@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Pencil, Check } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/components/AuthProvider";
+import MfaSetup from "@/components/MfaSetup";
 
 export default function AccountPage() {
     const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
@@ -33,7 +34,7 @@ export default function AccountPage() {
                                 />
                             </div>
                         ) : (
-                            <div className="w-40 h-40 rounded-full bg-primary/20 border-[6px] border-background shadow-sm flex items-center justify-center text-6xl font-medium text-foreground">
+                            <div className="w-40 h-40 rounded-full bg-muted border-[6px] border-background shadow-sm flex items-center justify-center text-6xl font-medium text-foreground">
                                 {user_email?.[0]?.toUpperCase() ?? "?"}
                             </div>
                         )}
@@ -71,12 +72,19 @@ export default function AccountPage() {
                             <div className="flex justify-between items-center group">
                                 <div className="flex w-full items-center">
                                     <span className="w-1/3 text-foreground font-medium">Location</span>
-                                    <span className="w-2/3 text-muted-foreground">Beijing</span>
+                                    <span className="w-2/3 text-muted-foreground">Taguig</span>
                                 </div>
                                 <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 transition-opacity">
                                     <Pencil className="w-4 h-4" />
                                 </Button>
                             </div>
+                        </div>
+                    </section>
+
+                    {/* MFA Security Section */}
+                    <section id="security" className="flex flex-col gap-6">
+                        <div className="max-w-2xl mx-auto w-full">
+                            <MfaSetup />
                         </div>
                     </section>
 

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
+import MfaSetup from '@/components/MfaSetup'
 
 const page = () => {
   return (
@@ -81,6 +82,16 @@ const page = () => {
               </div>
             </Card>
 
+          </div>
+      </div>
+      
+      {/* Security Section */}
+          <div className='flex flex-col gap-4 w-full lg:w-1/4'>
+            <h1 className='font-bold text-2xl'>Account Security</h1>
+            <p className='text-muted-foreground'>Secure your seller account with Multi-Factor Authentication.</p>
+          </div>
+          <div className='flex flex-col gap-4 w-full lg:w-3/4'>
+            <MfaSetup />
           </div>
       </div>
       
