@@ -10,6 +10,7 @@ export function Hero() {
         src="/sample-pics/SinSpire Girl.png"
         alt="SinSpire Girl"
         className="absolute inset-0 w-full h-full object-cover"
+        loading="eager"
       />
 
       <div className="absolute bottom-20 left-4 sm:bottom-24 sm:left-6 flex flex-col gap-1 max-w-lg">
