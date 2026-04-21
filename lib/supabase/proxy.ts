@@ -34,7 +34,7 @@ export async function updateSession(request: NextRequest) {
     const claims = claimsData?.claims;
     const uid = claims?.sub;   // This can still be undefined
 
-    console.log("UID from claims:", uid);
+    // console.log("UID from claims:", uid);
 
     let role: string | null = null;
 
@@ -52,7 +52,7 @@ export async function updateSession(request: NextRequest) {
             // Just continue with role = null (treat as no special role)
         } else {
             role = roleRes?.user_role || null;
-            console.log("User role:", role);
+            // console.log("User role:", role);
         }
     } else {
         console.log("No UID found — unauthenticated or invalid token");

@@ -19,7 +19,7 @@ const page = () => {
 
          {/* Cards */}
          <div className='flex flex-row gap-4 w-full *:w-full'>
-            <CardStat header="12" subHeader="Sales Today" icon={<DiamondPercent size={iconSize} color="background"/>} />
+            <CardStat header="12" subHeader="Transactions Today" icon={<DiamondPercent size={iconSize} color="background"/>} />
             <CardStat header="8" subHeader="Total Sellers" icon={<UserRoundPen size={iconSize} color="background"/>} />
             <CardStat header="146" subHeader="Total Products" icon={<PackageOpen size={iconSize} color="background" />} />
             <CardStat header="16" subHeader="Total Buyers" icon={<UserRound size={iconSize} color="background" />} />

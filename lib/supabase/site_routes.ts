@@ -3,7 +3,7 @@
 const roleRoutes : Record<string, Array<string>> = {
     buyer: ["/buyer", "/account", "/shopping-cart"],
     seller: ["/seller", "/account", "/shopping-cart", "/seller-dashboard", "/assets", "/orders", "/success-onboarding"],
-    admin: ["/admin", "/account", "/admin-dashboard", "/shopping-cart", "/manage-orders", "/manage-products", "/buyers", "/sellers", "/payment-gateways", "/reviews-ratings", "/site-content"],
+    admin: ["/admin", "/admin-dashboard", "/shopping-cart", "/manage-orders", "/manage-products", "/buyers", "/sellers", "/payment-gateways", "/reviews-ratings", "/site-content", "/site-config"],
 };
 
 const publicRoutes = [
@@ -30,7 +30,8 @@ const protectedRoutes = [
     "/reviews-ratings", 
     "/site-content",
     "/buyers",
-    "/sellers"
+    "/sellers",
+    "/site-config"
 ];
 
 // functions

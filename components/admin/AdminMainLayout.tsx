@@ -13,13 +13,9 @@ const AdminMainLayout = ({ children }: { children: ReactNode }) => {
             <Home size={iconSize} />
             Dashboard
         </Link>,
-        <Link key={'2'} className="hover:bg-accent hover:text-white p-2 rounded-md items-center flex gap-4" href={'/admin/buyers'}>
+        <Link key={'2'} className="hover:bg-accent hover:text-white p-2 rounded-md items-center flex gap-4" href={'/admin/manage-users'}>
             <FaUsers size={iconSize} />
-            Buyers
-        </Link>,
-        <Link key={'3'} className="hover:bg-accent hover:text-white p-2 rounded-md items-center flex gap-4" href={'/admin/sellers'}>
-            <FaUserTie size={iconSize} />
-            Sellers
+            Users
         </Link>,
         // <Link key={'3'} className="hover:bg-accent hover:text-white p-2 rounded-md items-center flex gap-4" href={'/admin/manage-products'}>
         //   <Boxes size={iconSize}/>
@@ -29,15 +25,15 @@ const AdminMainLayout = ({ children }: { children: ReactNode }) => {
         //   <Notebook size={iconSize}/>
         //   Orders
         // </Link>,
-        <Link key={'4'} className="hover:bg-accent hover:text-white p-2 rounded-md items-center flex gap-4" href={'/admin/site-content'}>
+        <Link key={'3'} className="hover:bg-accent hover:text-white p-2 rounded-md items-center flex gap-4" href={'/admin/site-content'}>
             <MonitorCog size={iconSize} />
             Site Content
         </Link>,
-        <Link key={'5'} className="hover:bg-accent hover:text-white p-2 rounded-md items-center flex gap-4" href={'/'}>
+        <Link key={'4'} className="hover:bg-accent hover:text-white p-2 rounded-md items-center flex gap-4" href={'/admin/system-config'}>
             <GrConfigure size={iconSize} />
             System Config
         </Link>,
-        <Link key={'6'} className="hover:bg-accent hover:text-white p-2 rounded-md items-center flex gap-4" href={'/admin/payment-gateways'}>
+        <Link key={'5'} className="hover:bg-accent hover:text-white p-2 rounded-md items-center flex gap-4" href={'/admin/payment-gateways'}>
             <HandCoins size={iconSize} />
             Payment Gateways
         </Link>,
@@ -47,14 +43,16 @@ const AdminMainLayout = ({ children }: { children: ReactNode }) => {
         // </Link>,
     ];
 
-    const settingLink: JSX.Element = <Link className="hover:bg-accent hover:text-white p-2 rounded-md items-center flex gap-4" href={'/admin/account'}>
-        <Settings size={iconSize} />
-        Settings
-    </Link>;
+    // Tinanggal ko muna toh, parang wala kasing sense e - Klarenz
+
+    // const settingLink: JSX.Element = <Link className="hover:bg-accent hover:text-white p-2 rounded-md items-center flex gap-4" href={'/admin/account'}>
+    //     <Settings size={iconSize} />
+    //     Settings
+    // </Link>;
 
     return (
         <main className='flex w-screen h-full min-h-0'>
-            <SideBar links={links} settingLink={settingLink} />
+            <SideBar links={links}/>
             {children}
         </main>
     )

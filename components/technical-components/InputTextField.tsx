@@ -1,4 +1,4 @@
-const SearchBar = (
+const InputTextField = (
   {placeholder} : 
   {placeholder : string}) => {
   return (
@@ -6,4 +6,4 @@ const SearchBar = (
   )
 }
 
-export default SearchBar
+export default InputTextField
