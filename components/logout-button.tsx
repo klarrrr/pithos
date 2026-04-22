@@ -10,8 +10,11 @@ export function LogoutButton() {
 
   const logout = async () => {
     const supabase = createClient();
-    await supabase.auth.signOut();
-    router.push("/auth/login");
+    // Use the global scope to ensure it logs out from everywhere, clearing session data properly
+    await supabase.auth.signOut({ scope: 'local' });
+    
+    // Force a hard navigation instead of router.push to clear any lingering client-side state
+    window.location.href = "/auth/login";
   };
 
   return <Button variant={'red_ghost'} className="justify-start items-center flex flex-row gap-4" onClick={logout}>

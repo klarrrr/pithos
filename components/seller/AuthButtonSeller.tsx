@@ -30,19 +30,23 @@ export function AuthButton() {
     <div className="flex items-center gap-4 text-white">
       {user_avatar ? (
         <Link href={'/seller/account'}>
-          <Image
-            src={user_avatar}
-            width={user_avatar_size}
-            height={user_avatar_size}
-            className="rounded-full hover:cursor-pointer"
-            alt={user.email ?? "User avatar"}
-          />
+          <div className="h-8 w-8 rounded-full overflow-hidden bg-muted flex items-center justify-center hover:opacity-80 transition-opacity cursor-pointer">
+            <Image
+              src={user_avatar}
+              width={user_avatar_size}
+              height={user_avatar_size}
+              className="object-cover"
+              alt={user.email ?? "User avatar"}
+            />
+          </div>
         </Link>
       ) : (
         // fallback avatar / initials
-        <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center text-xs font-medium">
-          {user.email?.[0]?.toUpperCase() ?? "?"}
-        </div>
+        <Link href={'/seller/account'}>
+          <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center text-xs font-medium hover:bg-primary/30 transition-colors cursor-pointer text-foreground">
+            {user.email?.[0]?.toUpperCase() ?? "?"}
+          </div>
+        </Link>
       )}
     </div>
   ) : (

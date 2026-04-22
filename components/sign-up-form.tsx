@@ -27,6 +27,7 @@ export function SignUpForm({
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -41,6 +42,7 @@ export function SignUpForm({
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+    setSuccess(null);
 
     if (password !== repeatPassword) {
       setError("Passwords do not match");
@@ -68,7 +70,7 @@ export function SignUpForm({
         throw new Error(result.message || 'Registration failed');
       }
 
-      router.push("/auth/login");
+      setSuccess("An activation link has been sent to your email. Please check your inbox and click the link to activate your account.");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
@@ -154,7 +156,12 @@ export function SignUpForm({
                   {error}
                 </div>
               )}
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              {success && (
+                <div className=" rounded-lg border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-700 dark:border-green-700 dark:bg-green-950 dark:text-green-100">
+                  {success}
+                </div>
+              )}
+              <Button type="submit" className="w-full" disabled={isLoading || !!success}>
                 {isLoading ? "Creating an account..." : "Sign up"}
               </Button>
             </div>
