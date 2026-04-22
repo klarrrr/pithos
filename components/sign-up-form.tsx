@@ -13,11 +13,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SocialAuthButtons from "./SocialAuthButtons";
 import Separator from "@/components/Separator";
 import PithosLogo from "./PithosLogo";
-import { validatePassword, PASSWORD_RULES } from "@/lib/auth/password-rules";
+import { validatePassword } from "@/lib/auth/password-rules";
+import { createClient } from "@/lib/supabase/client";
+import { getSystemConfig } from "@/app/(main)/(protected)/admin/system-config/system-config-settings";
 
 export function SignUpForm({
   className,
@@ -29,11 +31,32 @@ export function SignUpForm({
   const [error, setError] = useState<string | null>(null);
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [rules, setRules] = useState({
+    min_char_length: 12,
+    min_uppercase: 1,
+    min_lowercase: 1,
+    min_numbers: 1,
+    min_spec_chars: 1
+  });
   const router = useRouter();
+
+  useEffect(() => {
+    const fetchRules = async () => {
+      const { data, error } = await getSystemConfig();
+      if (error) {
+        console.error("Error fetching rules from server action:", error);
+        return;
+      }
+      if (data) {
+        setRules(data);
+      }
+    };
+    fetchRules();
+  }, []);
 
   const handlePasswordChange = (value: string) => {
     setPassword(value);
-    const errors = validatePassword(value);
+    const errors = validatePassword(value, rules);
     setPasswordErrors(errors);
   };
 
@@ -48,7 +71,7 @@ export function SignUpForm({
       return;
     }
 
-    const validationErrors = validatePassword(password);
+    const validationErrors = validatePassword(password, rules);
     if (validationErrors.length > 0) {
       setError(`Password must contain: ${validationErrors.join(', ')}.`);
       setIsLoading(false);
@@ -118,20 +141,20 @@ export function SignUpForm({
                 />
                 {password && (
                   <div className="mt-2 space-y-1 text-xs">
-                    <div className={password.length >= PASSWORD_RULES.minLength ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
-                      {password.length >= PASSWORD_RULES.minLength ? "✓" : "✗"} At least {PASSWORD_RULES.minLength} characters
+                    <div className={password.length >= rules.min_char_length ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+                      {password.length >= rules.min_char_length ? "✓" : "✗"} At least {rules.min_char_length} characters
                     </div>
-                    <div className={PASSWORD_RULES.requireUppercase && /[A-Z]/.test(password) ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
-                      {PASSWORD_RULES.requireUppercase && /[A-Z]/.test(password) ? "✓" : "✗"} At least 1 uppercase letter
+                    <div className={rules.min_uppercase > 0 && (password.match(/[A-Z]/g) || []).length >= rules.min_uppercase ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+                      {rules.min_uppercase > 0 && (password.match(/[A-Z]/g) || []).length >= rules.min_uppercase ? "✓" : "✗"} At least {rules.min_uppercase} uppercase letter(s)
                     </div>
-                    <div className={PASSWORD_RULES.requireLowercase && /[a-z]/.test(password) ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
-                      {PASSWORD_RULES.requireLowercase && /[a-z]/.test(password) ? "✓" : "✗"} At least 1 lowercase letter
+                    <div className={rules.min_lowercase > 0 && (password.match(/[a-z]/g) || []).length >= rules.min_lowercase ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+                      {rules.min_lowercase > 0 && (password.match(/[a-z]/g) || []).length >= rules.min_lowercase ? "✓" : "✗"} At least {rules.min_lowercase} lowercase letter(s)
                     </div>
-                    <div className={PASSWORD_RULES.requireNumber && /[0-9]/.test(password) ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
-                      {PASSWORD_RULES.requireNumber && /[0-9]/.test(password) ? "✓" : "✗"} At least 1 number
+                    <div className={rules.min_numbers > 0 && (password.match(/[0-9]/g) || []).length >= rules.min_numbers ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+                      {rules.min_numbers > 0 && (password.match(/[0-9]/g) || []).length >= rules.min_numbers ? "✓" : "✗"} At least {rules.min_numbers} number(s)
                     </div>
-                    <div className={PASSWORD_RULES.requireSpecial && /[^A-Za-z0-9]/.test(password) ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
-                      {PASSWORD_RULES.requireSpecial && /[^A-Za-z0-9]/.test(password) ? "✓" : "✗"} At least 1 special character
+                    <div className={rules.min_spec_chars > 0 && (password.match(/[^A-Za-z0-9]/g) || []).length >= rules.min_spec_chars ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}>
+                      {rules.min_spec_chars > 0 && (password.match(/[^A-Za-z0-9]/g) || []).length >= rules.min_spec_chars ? "✓" : "✗"} At least {rules.min_spec_chars} special character(s)
                     </div>
                   </div>
                 )}
