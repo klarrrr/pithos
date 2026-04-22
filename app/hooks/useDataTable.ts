@@ -25,7 +25,10 @@ export function useDataTable(entity: string) {
                 const res = await fetch(apiLink, {
                     method: "GET"
                 })
+                
                 const json = await res.json()
+
+                // if (json && q) setPage(1) 
 
                 setData(json.data)
                 setTotal(json.total)

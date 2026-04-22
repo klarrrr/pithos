@@ -1,5 +1,9 @@
 "use client"
 
+import { Button } from "../ui/button"
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa"
+import InputTextField from "@/components/technical-components/InputTextField"
+
 import {
     ColumnDef,
     flexRender,
@@ -37,111 +41,121 @@ export function DataTable<T>({
         getCoreRowModel: getCoreRowModel(),
     })
 
-    const totalPages = Math.ceil(total / 10)
+    const totalPages = Math.ceil(total / 9)
 
     const rows = table.getRowModel()?.rows ?? []
     console.log("Rows: ", rows);
 
     return (
-        <div className="flex flex-col gap-4 h-full w-full">
+        <div className="flex flex-col gap-4 h-full w-full justify-between">
 
-            {/*  Search  */}
-            <input
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                placeholder="Search users..."
-                className="border p-2 w-full rounded-md"
-            />
+            <div className="flex flex-col gap-4 w-full">
 
-            {/* Table wrapper */}
-            <div className="w-full border border-muted rounded-lg overflow-hidden">
-                <div className="p-4">
+                {/*  Search  */}
+                <input
+                    value={q}
+                    onChange={(e) => setQ(e.target.value)}
+                    placeholder="Search users..."
+                    className="border-muted outline-none focus:border-foreground focus:ring-foreground w-full hover:border hover:border-foreground bg-primary-foreground px-5 rounded-md"
+                />
 
-                    <table className="min-w-full border-collapse *:*:*:border *:*:*:border-muted *:*:*:p-4 w-full">
+                {/* Table wrapper */}
+                <div className="w-full border border-muted rounded-lg overflow-hidden">
+                    <div className="p-4">
 
-                        <thead>
-                            {table.getHeaderGroups().map((hg) => (
-                                <tr key={hg.id} className="bg-foreground text-background">
-                                    {hg.headers.map((header) => {
-                                        const key = header.id
+                        <table className="min-w-full border-collapse *:*:*:border *:*:*:border-muted *:*:*:p-4 w-full">
 
-                                        return (
-                                            <th
-                                                key={header.id}
-                                                onClick={() => {
-                                                    const newOrder =
-                                                        sort === key && order === "asc"
-                                                            ? "desc"
-                                                            : "asc"
+                            <thead>
+                                {table.getHeaderGroups().map((hg) => (
+                                    <tr key={hg.id} className="bg-primary-foreground">
+                                        {hg.headers.map((header) => {
+                                            const key = header.id
 
-                                                    setSort(key)
-                                                    setOrder(newOrder)
-                                                }}
-                                                className="cursor-pointer"
-                                            >
-                                                {flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                            </th>
-                                        )
-                                    })}
-                                </tr>
-                            ))}
-                        </thead>
+                                            return (
+                                                <th
+                                                    key={header.id}
+                                                    onClick={() => {
+                                                        const newOrder =
+                                                            sort === key && order === "asc"
+                                                                ? "desc"
+                                                                : "asc"
 
-                        <tbody>
-                            {loading ? (
-                                <tr>
-                                    <td colSpan={columns.length} className="text-center py-10 text-muted-foreground">
-                                        Loading...
-                                    </td>
-                                </tr>
-                            ) : rows.length === 0 ? (
-                                <tr>
-                                    <td colSpan={columns.length} className="text-center py-10 text-muted-foreground">
-                                        No records found.
-                                    </td>
-                                </tr>
-                            ) : (
-                                table.getRowModel().rows.map((row) => (
-                                    <tr key={row.id}>
-                                        {row.getVisibleCells().map((cell) => (
-                                            <td key={cell.id}>
-                                                {flexRender(
-                                                    cell.column.columnDef.cell,
-                                                    cell.getContext()
-                                                )}
-                                            </td>
-                                        ))}
+                                                        setSort(key)
+                                                        setOrder(newOrder)
+                                                    }}
+                                                    className="cursor-pointer"
+                                                >
+                                                    {flexRender(
+                                                        header.column.columnDef.header,
+                                                        header.getContext()
+                                                    )}
+                                                </th>
+                                            )
+                                        })}
                                     </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                                ))}
+                            </thead>
+
+                            <tbody>
+                                {loading ? (
+                                    <tr>
+                                        <td colSpan={columns.length} className="text-center py-10 text-muted-foreground">
+                                            Loading...
+                                        </td>
+                                    </tr>
+                                ) : rows.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={columns.length} className="text-center py-10 text-muted-foreground">
+                                            No records found.
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    table.getRowModel().rows.map((row) => (
+                                        <tr key={row.id}>
+                                            {row.getVisibleCells().map((cell) => (
+                                                <td key={cell.id}>
+                                                    {flexRender(
+                                                        cell.column.columnDef.cell,
+                                                        cell.getContext()
+                                                    )}
+                                                </td>
+                                            ))}
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
             </div>
+
 
             {/* Pagination */}
             <div className="flex justify-between items-center">
-                <button
+
+                <Button
+                    variant={'ghost'}
                     disabled={page === 1}
                     onClick={() => setPage(page - 1)}
                 >
-                    Prev
-                </button>
+                    <FaArrowLeft/> Prev
+                </Button>
 
                 <span>
                     Page {page} of {totalPages || 1}
                 </span>
 
-                <button
+                <Button
+                    variant={'ghost'}
                     disabled={page >= totalPages}
                     onClick={() => setPage(page + 1)}
                 >
-                    Next
-                </button>
+                    Next <FaArrowRight />
+                </Button>
+                
             </div>
+
         </div>
     )
 }
