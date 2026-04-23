@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { validatePassword } from '@/lib/auth/password-rules';
 
@@ -13,9 +14,23 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Password complexity check
-        const supabase = createAdminClient();
+        // Check if user already exists
+        const adminSupabase = createAdminClient();
+        const { data: existingUsers, error: userLookupError } = await adminSupabase.auth.admin.listUsers();
         
+        if (!userLookupError) {
+            const userExists = existingUsers.users.some(u => u.email === email);
+            if (userExists) {
+                return NextResponse.json(
+                    { status: 'error', message: 'User already registered.' },
+                    { status: 400 }
+                );
+            }
+        }
+
+        // Password complexity check
+        const supabase = await createClient();
+
         // Fetch rules from DB
         const { data: config } = await supabase
             .from('system_configs')
@@ -34,11 +49,13 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Create user in auth.users table
-        const { data, error } = await supabase.auth.admin.createUser({
+
+        const { data, error } = await supabase.auth.signUp({
             email,
             password,
-            email_confirm: true,
+            options: {
+                emailRedirectTo: `${request.nextUrl.origin}/auth/login`,
+            }
         });
 
         if (error) {
@@ -48,7 +65,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        return NextResponse.json({ status: 'ok', user_id: data.user.id });
+        return NextResponse.json({ status: 'ok', user_id: data.user?.id });
     } catch (error) {
         console.error('Sign up error:', error);
         return NextResponse.json(
