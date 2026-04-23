@@ -19,6 +19,7 @@ import SocialAuthButtons from "./SocialAuthButtons";
 import Separator from "@/components/Separator";
 import Image from "next/image";
 import PithosLogo from "./PithosLogo";
+import { getSystemConfig } from "@/app/(main)/(protected)/admin/system-config/system-config-settings";
 
 export function LoginForm({
   className,
@@ -60,6 +61,22 @@ export function LoginForm({
     setPassword("");
     setError(null);
   };
+
+  const [maxAttempts, setMaxAttempts] = useState(3);
+
+  useEffect(() => {
+    const fetchMaxAttempts = async () => {
+      const { data, error } = await getSystemConfig();
+      if (error) {
+        console.error("Error fetching max attempts from server action:", error);
+        return;
+      }
+      if (data?.max_login_attempts) {
+        setMaxAttempts(data.max_login_attempts);
+      }
+    };
+    fetchMaxAttempts();
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -105,7 +122,7 @@ export function LoginForm({
           if (status?.is_locked) {
             throw new Error(`Account is locked due to too many failed attempts (${status.login_attempts} total). Please contact support.`);
           } else if (status?.login_attempts) {
-            const attemptsLeft = 3 - status.login_attempts;
+            const attemptsLeft = maxAttempts - status.login_attempts;
             throw new Error(`Invalid credentials. You have ${attemptsLeft} attempt(s) left.`);
           }
         }

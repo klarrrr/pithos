@@ -60,6 +60,11 @@ export async function updateSession(request: NextRequest) {
 
     const pathname = request.nextUrl.pathname;
 
+    // Skip Api routes
+    if (pathname.startsWith("/api")) {
+        return NextResponse.next()
+    }
+
     // Public route — everyone can access
     if (pathname === "/") {
         return supabaseResponse;

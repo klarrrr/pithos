@@ -10,10 +10,23 @@ import { ArrowLeft } from "@deemlol/next-icons";
 import Tabs from "@/components/ui/tabs";
 import { JSX } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { DataTable } from "@/components/technical-components/DataTable";
+import { useDataTable } from "@/app/hooks/useDataTable";
+import { Suspense } from "react";
 
 // TODO: It's probably for the best if the search button and the search bar are on the same component.
 
-const supabase = createClient();
+// const supabase = createClient();
+
+type User = {
+    id: string
+    created_at: string
+    user_email: string
+    user_role: string
+    login_attempt: number
+    is_locked: boolean
+    user_fullname: string
+}
 
 const page = () => {
     
@@ -22,26 +35,28 @@ const page = () => {
     const [loading, setLoading] = useState(true);
     const [isTableHidden, setIsTableHidden] = useState(false);
 
-    const fetchUsers = async () => {
-        setLoading(true);
-        const { data, error } = await supabase
-            .from('users')
-            .select('id, created_at, user_email, user_role, login_attempts, is_locked, user_fullname');
+    // const fetchUsers = async () => {
+    //     setLoading(true);
+    //     const { data, error } = await supabase
+    //         .from('users')
+    //         .select('id, created_at, user_email, user_role, login_attempts, is_locked, user_fullname');
 
-        if (error) {
-            console.error("Error fetching users:", error);
-            return;
-        }
+    //     if (error) {
+    //         console.error("Error fetching users:", error);
+    //         return;
+    //     }
 
-        console.log("Fetched Users:", data);
-        setUsers(data || []);
-        setLoading(false);
-    };
+    //     console.log("Fetched Users:", data);
+    //     setUsers(data || []);
+    //     setLoading(false);
+    // };
 
-    // Get user details on page load 
-    useEffect(()=>{
-        fetchUsers();
-    }, []);
+    // // Get user details on page load 
+    // useEffect(()=>{
+    //     fetchUsers();
+    // }, []);
+
+    const table = useDataTable("users")
 
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString('en-PH', {
@@ -162,7 +177,7 @@ const page = () => {
             <div className='flex gap-4 h-full'>
 
                 {/* Users Table */}
-                <div className={`${isTableHidden ? 'hidden' : 'block'} w-full border border-muted rounded-lg overflow-hidden`}>
+                {/* <div className={`${isTableHidden ? 'hidden' : 'block'} w-full border border-muted rounded-lg overflow-hidden`}>
                     <div className="p-4">
                         <table className="min-w-full border-collapse *:*:*:border *:*:*:border-muted *:*:*:p-4 w-full">
                             <thead>
@@ -232,7 +247,47 @@ const page = () => {
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div> */}
+
+                <Suspense fallback={<div>Loading...</div>}>
+                    <div className={`${isTableHidden ? 'hidden' : 'block'} w-full h-full`}>
+                        <DataTable<User>
+                            {...table}
+                            columns={[
+                                {key: "id", label: "User ID", sortable: true, render: (_: any, row: any) => (
+                                    <p className="font-mono text-xs">{row.id}</p>
+                                )},
+                                {key: "created_at", label: "Joined At", sortable: true, render: (_: any, row: any) => (
+                                    <p>{formatDate(row.created_at)}</p>
+                                )},
+                                {key: "user_email", label: "Email", sortable: true},
+                                {key: "user_role", label: "Role"},
+                                {key: "login_attempts", label: "Login Attempts"},
+                                {key: "is_locked", label: "Status", render: (_: any, row: any) => (
+                                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${row.is_locked
+                                        ? "text-red-600"
+                                        : "text-green-600"
+                                        }`}>
+                                        {row.is_locked ? "Locked" : "Active"}
+                                    </span>
+                                )},
+                                {key: "user_fullname", label: "Full Name", sortable: true},
+                                {key: "role", label: "Actions", render: (_ : any, row : any) => (
+                                    <Button
+                                        variant={'default'}
+                                        size="sm"
+                                        onClick={() => {
+                                            // TODO: open detail page depending on row.role
+                                            setIsTableHidden(true);
+                                        }}
+                                    >
+                                        View Details
+                                    </Button>
+                                )},
+                            ]}
+                        />
+                    </div>
+                </Suspense>
 
                 {/* Buyer Detail Page */}
                 <div className={`${isTableHidden ? 'flex' : 'hidden'} w-full flex-row gap-4`}>

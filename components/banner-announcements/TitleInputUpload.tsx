@@ -11,6 +11,7 @@ const TitleInputUpload = ({title, placeholder} : {title : string, placeholder : 
                 width={600}
                 height={50}
                 className="w-full md:w-2/4 h-full object-cover rounded-md border border-muted"
+                loading="eager"
             />
             <div className='flex flex-col gap-2 w-full md:w-2/4'>
                 <h1 className='font-medium'>{title}</h1>
