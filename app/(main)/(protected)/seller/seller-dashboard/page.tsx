@@ -1,139 +1,154 @@
-import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import LineChart from '@/components/technical-components/LineChart'
-import { ArrowUpRight, BarChart3, CreditCard, ShoppingBag } from 'lucide-react'
+import CardStat from '@/components/technical-components/CardStat'
+
+import {
+  Eye,
+  ShoppingBag,
+  CreditCard,
+  BarChart3,
+  ArrowUpRight
+} from 'lucide-react'
 
 const SellerDashboard = () => {
-  return (
-    <div className="min-h-screen bg-background px-6 py-8 lg:px-10">
-      
-      {/* HEADER */}
-      <div className="flex flex-col gap-4 pb-8 border-b">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          <div>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">
-              Dashboard
-            </p>
-            <h1 className="text-3xl font-semibold mt-1">
-              Performance Overview
-            </h1>
-            <p className="text-sm text-muted-foreground mt-2 max-w-xl">
-              Track your sales, engagement, and asset performance in one place.
-            </p>
-          </div>
+  const iconSize = 32
 
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="font-medium">
-              New Project
-            </Button>
-            <Button size="sm" className="font-medium">
-              Publish
-            </Button>
+  return (
+    <div className="flex flex-col p-4 bg-background w-full gap-4">
+
+      {/* HEADER */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold">Seller Dashboard</h1>
+          <p className="text-sm text-muted-foreground">
+            Monitor your assets, sales, and performance
+          </p>
+        </div>
+
+        <div className="flex gap-2">
+          <Button variant="outline">New Asset</Button>
+          <Button>Publish</Button>
+        </div>
+      </div>
+
+      <hr />
+
+      {/* STATS */}
+      <div className="flex gap-4 w-full *:w-full">
+        <CardStat
+          header="1,240"
+          subHeader="Total Views"
+          icon={<BarChart3 size={iconSize} />}
+        />
+        <CardStat
+          header="384"
+          subHeader="Downloads"
+          icon={<ShoppingBag size={iconSize} />}
+        />
+        <CardStat
+          header="$2,420"
+          subHeader="Revenue"
+          icon={<CreditCard size={iconSize} />}
+        />
+      </div>
+
+      {/* ACTIVITY PANELS */}
+      <div className="flex gap-4 w-full h-[260px]">
+
+        {/* Recent Assets */}
+        <div className="w-full bg-primary-foreground border border-muted rounded-xl p-4 flex flex-col">
+          <h2 className="font-bold text-xl">Recent Assets</h2>
+          <hr className="my-2" />
+
+          <div className="flex flex-col gap-2 text-sm">
+            {[1, 2, 3].map((_, i) => (
+              <div key={i} className="flex justify-between items-center">
+                <div className="flex gap-2">
+                  <p>Asset Name</p>
+                </div>
+                <Button size="icon" variant="red_default">
+                  <Eye size={18} />
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Recent Orders */}
+        <div className="w-full bg-primary-foreground border border-muted rounded-xl p-4 flex flex-col">
+          <h2 className="font-bold text-xl">Recent Orders</h2>
+          <hr className="my-2" />
+
+          <div className="flex flex-col gap-2 text-sm">
+            {[1, 2, 3].map((_, i) => (
+              <div key={i} className="flex justify-between items-center">
+                <p>#ORD-{1000 + i}</p>
+                <Button size="icon" variant="red_default">
+                  <Eye size={18} />
+                </Button>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* KPI ROW */}
-      <div className="grid gap-4 mt-8 sm:grid-cols-2 lg:grid-cols-3">
-        <Card className="p-6 rounded-2xl">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-muted-foreground">Total Views</p>
-            <BarChart3 className="h-5 w-5 text-muted-foreground" />
-          </div>
-          <h2 className="text-2xl font-semibold mt-3">1,240</h2>
-          <p className="text-xs text-muted-foreground mt-1">+12% this week</p>
-        </Card>
+      {/* LOWER SECTION */}
+      <div className="flex gap-4 w-full h-[320px] overflow-hidden">
 
-        <Card className="p-6 rounded-2xl">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-muted-foreground">Downloads</p>
-            <ShoppingBag className="h-5 w-5 text-muted-foreground" />
-          </div>
-          <h2 className="text-2xl font-semibold mt-3">384</h2>
-          <p className="text-xs text-muted-foreground mt-1">+9.4% growth</p>
-        </Card>
-
-        <Card className="p-6 rounded-2xl">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-muted-foreground">Revenue</p>
-            <CreditCard className="h-5 w-5 text-muted-foreground" />
-          </div>
-          <h2 className="text-2xl font-semibold mt-3">$2,420</h2>
-          <p className="text-xs text-muted-foreground mt-1">+14.6% this week</p>
-        </Card>
-      </div>
-
-      {/* MAIN SECTION */}
-      <div className="grid gap-8 mt-8 lg:grid-cols-[2fr_1fr]">
-        
         {/* CHART */}
-        <Card className="p-6 rounded-2xl">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-muted-foreground">
-                Sales Overview
-              </p>
-              <h3 className="text-xl font-semibold mt-1">
-                Earnings This Quarter
-              </h3>
-            </div>
-
-            <Button variant="outline" size="sm">
-              Export
-            </Button>
+        <div className="flex-1 min-w-0 bg-primary-foreground border border-muted rounded-xl p-4 flex flex-col gap-4">
+          <div className="flex justify-between items-center">
+            <h2 className="font-bold text-xl">Revenue Overview</h2>
+            <Button size="sm" variant="outline">Export</Button>
           </div>
 
-          <div className="mt-6 rounded-xl border p-4 bg-background">
+          <div className="h-full overflow-hidden">
             <LineChart />
           </div>
-        </Card>
+        </div>
 
-        {/* SIDE PANEL */}
-        <div className="flex flex-col gap-4">
-          
-          <Card className="p-6 rounded-2xl">
-            <p className="text-sm text-muted-foreground">Active Project</p>
-            <h3 className="text-xl font-semibold mt-2">
-              Sinspire Assets
-            </h3>
-            <p className="text-sm text-muted-foreground mt-2">
-              3D asset collection ready for sale and promotion.
-            </p>
+        {/* SIDE INFO */}
+        <div className="w-[320px] flex flex-col gap-4">
 
-            <div className="mt-4 flex items-center justify-between text-sm">
+          {/* Active Project */}
+          <div className="bg-primary-foreground border border-muted rounded-xl p-4">
+            <h2 className="font-bold text-lg">Active Project</h2>
+            <p className="text-sm mt-2">Sinspire Assets</p>
+
+            <div className="mt-4 text-sm flex justify-between">
               <span>Status</span>
               <span className="font-medium">Published</span>
             </div>
 
-            <div className="mt-2 flex items-center justify-between text-sm">
+            <div className="text-sm flex justify-between">
               <span>Updated</span>
               <span className="font-medium">2 days ago</span>
             </div>
-          </Card>
+          </div>
 
-          <Card className="p-6 rounded-2xl">
-            <p className="text-sm text-muted-foreground">Revenue Breakdown</p>
-            <h3 className="text-xl font-semibold mt-2">$2,420</h3>
+          {/* Revenue Breakdown */}
+          <div className="bg-primary-foreground border border-muted rounded-xl p-4">
+            <h2 className="font-bold text-lg">Revenue</h2>
 
-            <div className="mt-4 space-y-3 text-sm">
+            <div className="mt-3 text-sm space-y-2">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Pending</span>
+                <span>Pending</span>
                 <span>$812</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Paid</span>
+                <span>Paid</span>
                 <span>$1,608</span>
               </div>
             </div>
 
-            <div className="mt-4 flex items-center justify-between text-sm border-t pt-4">
+            <div className="mt-4 flex justify-between items-center text-sm border-t pt-3">
               <div className="flex items-center gap-2">
-                <ArrowUpRight className="h-4 w-4" />
-                Weekly Growth
+                <ArrowUpRight size={16} />
+                Growth
               </div>
               <span className="font-medium">+14.6%</span>
             </div>
-          </Card>
+          </div>
 
         </div>
       </div>

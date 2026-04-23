@@ -1,4 +1,4 @@
-import SearchBar from "@/components/technical-components/SearchBar"
+
 import FilterBy from "@/components/technical-components/FilterBy"
 import SortBy from "@/components/technical-components/SortBy"
 import SearchButton from "@/components/technical-components/SearchButton"
@@ -15,7 +15,7 @@ const page = () => {
                     <div className="flex flex-row gap-2 h-full items-center">
                         <SortBy sortOptions={["Date", "Amount", "Status"]} />
                         <FilterBy filterOptions={["All", "Pending", "Completed", "Refunded", "Cancelled"]} />
-                        <SearchBar placeholder="Search for orders" />
+                       
                         <SearchButton />
                     </div>
                 </div>
