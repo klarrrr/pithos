@@ -29,7 +29,15 @@ export async function POST(request: NextRequest) {
         }
 
         // Password complexity check
-        const errors = validatePassword(password);
+        const supabase = await createClient();
+
+        // Fetch rules from DB
+        const { data: config } = await supabase
+            .from('system_configs')
+            .select('*')
+            .single();
+
+        const errors = validatePassword(password, config || undefined);
 
         if (errors.length > 0) {
             return NextResponse.json(
@@ -41,7 +49,6 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const supabase = await createClient();
 
         const { data, error } = await supabase.auth.signUp({
             email,

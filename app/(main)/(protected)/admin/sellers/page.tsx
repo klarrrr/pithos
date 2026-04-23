@@ -1,4 +1,4 @@
-import SearchBar from "@/components/technical-components/SearchBar"
+import InputTextField from "@/components/technical-components/InputTextField"
 import FilterBy from "@/components/technical-components/FilterBy"
 import SortBy from "@/components/technical-components/SortBy"
 import SearchButton from "@/components/technical-components/SearchButton"
@@ -13,7 +13,7 @@ const page = () => {
                 <div className="flex flex-row gap-2 h-full items-center">
                     <SortBy sortOptions={[""]} />
                     <FilterBy filterOptions={[""]} />
-                    <SearchBar placeholder="Search for users" />
+                    <InputTextField placeholder="Search for users" />
                     <SearchButton />
                 </div>
             </div>

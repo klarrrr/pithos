@@ -24,9 +24,8 @@ const Tabs = ({ items }: { items: Array<JSX.Element> }) => {
 
         <div className='flex flex-col gap-4'>
             <div className='flex w-full gap-8 font-medium text-lg *:pb-4 bo border-b'>
-                <button onClick={()=>setActiveTab(1)} className={`hover:border-b-chart-5 hover:border-b-2 hover:text-chart-5 ${activeTab === 1 ? 'border-b-accent border-b-2 text-accent' : 'text-muted-foreground'} transition duration-300 ease-in-out `}>Buyers</button>
-                <button onClick={()=>setActiveTab(2)} className={`hover:border-b-chart-5 hover:border-b-2 hover:text-chart-5 ${activeTab === 2 ? 'border-b-accent border-b-2 text-accent' : 'text-muted-foreground'} transition duration-300 ease-in-out `} >Transactions</button>
-                <button onClick={()=>setActiveTab(3)} className={`hover:border-b-chart-5 hover:border-b-2 hover:text-chart-5 ${activeTab === 3 ? 'border-b-accent border-b-2 text-accent' : 'text-muted-foreground'} transition duration-300 ease-in-out `} >Given Ratings</button>
+                <button onClick={()=>setActiveTab(1)} className={`hover:border-b-chart-5 hover:border-b-2 hover:text-chart-5 ${activeTab === 1 ? 'border-b-accent border-b-2 text-accent' : 'text-muted-foreground'} transition duration-300 ease-in-out `} >Transactions</button>
+                <button onClick={()=>setActiveTab(2)} className={`hover:border-b-chart-5 hover:border-b-2 hover:text-chart-5 ${activeTab === 2 ? 'border-b-accent border-b-2 text-accent' : 'text-muted-foreground'} transition duration-300 ease-in-out `} >Given Ratings</button>
             </div>
             {renderItems()}
         </div>
