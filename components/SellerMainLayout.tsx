@@ -26,9 +26,11 @@ const SellerMainLayout = ({children} : {children : ReactNode}) => {
   </Link>;
 
   return (
-    <main className='flex w-screen h-full'>
+    <main className='flex w-full h-full min-h-0 overflow-hidden'>
         <SideBar links={links} settingLink={settingLink}/>
-        {children}
+        <section className="flex-1 min-w-0 h-full overflow-y-auto">
+          {children}
+        </section>
     </main>
   )
 }

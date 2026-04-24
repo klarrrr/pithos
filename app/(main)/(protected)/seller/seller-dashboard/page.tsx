@@ -127,7 +127,7 @@ const SellerDashboard = () => {
           </div>
 
           {/* Revenue Breakdown */}
-          <div className="bg-primary-foreground border border-muted rounded-xl p-4">
+          <div className="bg-primary-foreground border rounded-xl p-4">
             <h2 className="font-bold text-lg">Revenue</h2>
 
             <div className="mt-3 text-sm space-y-2">
