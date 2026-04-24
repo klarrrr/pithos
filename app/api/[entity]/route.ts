@@ -16,6 +16,16 @@ export async function GET(
     const q = searchParams.get("q") ?? ""
     const sort = searchParams.get("sort") ?? "id"
     const order = searchParams.get("order") ?? "asc"
+    const filters: Record<string, string[]> = {};
+
+    searchParams.forEach((value, key) => {
+        const match = key.match(/^filter\[(.+)\]$/);
+        if (match) {
+            const column = match[1];
+            if (!filters[column]) filters[column] = [];
+            filters[column].push(value);
+        }
+    });
 
     const limit = 9
     const from = (page - 1) * limit
@@ -26,16 +36,25 @@ export async function GET(
         .select("*", { count: "exact" })
 
     // Search across fields
-    if (q) {
-        
-        // console.log("ConsoleLog q: ", q)
-        // Text-Based columns only for flexibility
-        // query = query.or(`user_email.ilike.%${q}%, user_fullname.ilike.%${q}%, id::text.ilike.%${q}%`)
-        query = query.or(`user_email.ilike.%${q}%, user_fullname.ilike.%${q}%`)
-        // TODO: Find some kind of way to query different column types.
-        // query = query.or(`user_email.plfts.${q},user_fullname.plfts.${q}`)
-        
-        // query = query.ilike("user_fullname", `%${q}%`)
+    // TODO: Pass searchable columns later on frontend
+    const searchColumns = searchParams.getAll("search");
+
+    if (q && searchColumns.length > 0) {
+        const orQuery = searchColumns
+            .map(col => `${col}.ilike.%${q}%`)
+            .join(",");
+
+        query = query.or(orQuery);
+    }
+
+    if (filters) {
+        Object.entries(filters).forEach(([column, values]) => {
+            if (values.length === 1) {
+                query = query.eq(column, values[0]);
+            } else {
+                query = query.in(column, values);
+            }
+        });
     }
 
     query = query.order(sort, { ascending: order === "asc" })
@@ -62,27 +81,3 @@ export async function GET(
         }
     )
 }
-
-/* 
-
-- Let's say I write a loop like a for loop
-- And I loop over an array of columns such as ['id', 'user_email', 'user_fullname']
-
-for (array : e) {
-    query = query.ilike(e, `%${q}%`)
-}
-
-- Can i stack on my ilikes on the query then await for it later on?
-- is this a viable solution?
-
-
-=====
-
-
-- What about if i switch the query.ilike with:
-
-query = query.or(`${e}.ilike.%${q}%`)
-
-- This way, i won't have to worry about the ilike being AND clauses right?
-
-*/

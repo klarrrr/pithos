@@ -1,23 +1,15 @@
 "use client";
 
-import InputTextField from "@/components/technical-components/InputTextField"
-import FilterBy from "@/components/technical-components/FilterBy"
-import SortBy from "@/components/technical-components/SortBy"
-import SearchButton from "@/components/technical-components/SearchButton"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "@deemlol/next-icons";
 import Tabs from "@/components/ui/tabs";
 import { JSX } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { DataTable } from "@/components/technical-components/DataTable";
 import { useDataTable } from "@/app/hooks/useDataTable";
 import { Suspense } from "react";
 
-// TODO: It's probably for the best if the search button and the search bar are on the same component.
-
-// const supabase = createClient();
-
+// User Table Types
 type User = {
     id: string
     created_at: string
@@ -31,32 +23,12 @@ type User = {
 const page = () => {
     
     // States
-    const [users, setUsers] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
     const [isTableHidden, setIsTableHidden] = useState(false);
 
-    // const fetchUsers = async () => {
-    //     setLoading(true);
-    //     const { data, error } = await supabase
-    //         .from('users')
-    //         .select('id, created_at, user_email, user_role, login_attempts, is_locked, user_fullname');
-
-    //     if (error) {
-    //         console.error("Error fetching users:", error);
-    //         return;
-    //     }
-
-    //     console.log("Fetched Users:", data);
-    //     setUsers(data || []);
-    //     setLoading(false);
-    // };
-
-    // // Get user details on page load 
-    // useEffect(()=>{
-    //     fetchUsers();
-    // }, []);
-
-    const table = useDataTable("users")
+    const table = useDataTable("users", [
+        "user_email",
+        "user_fullname"
+    ])
 
     const formatDate = (dateString: string) => {
         return new Date(dateString).toLocaleDateString('en-PH', {
@@ -66,7 +38,6 @@ const page = () => {
         });
     };
     
-
     // Tabs to cycle between in buyers
     const buyer_items: JSX.Element[] = [
 
@@ -164,10 +135,7 @@ const page = () => {
             <div className="flex flex-row justify-between">
                 <h1 className='font-bold text-3xl'>Manage Users</h1>
                 <div className="flex flex-row gap-2 h-full items-center">
-                    <SortBy sortOptions={[""]} />
-                    <FilterBy filterOptions={[""]} />
-                    <InputTextField placeholder="Search for users" />
-                    <SearchButton />
+                   
                 </div>
             </div>
 
@@ -176,79 +144,7 @@ const page = () => {
             {/* Content */}
             <div className='flex gap-4 h-full'>
 
-                {/* Users Table */}
-                {/* <div className={`${isTableHidden ? 'hidden' : 'block'} w-full border border-muted rounded-lg overflow-hidden`}>
-                    <div className="p-4">
-                        <table className="min-w-full border-collapse *:*:*:border *:*:*:border-muted *:*:*:p-4 w-full">
-                            <thead>
-                                <tr className="bg-foreground text-background">
-                                    <th className="w-10"><input type="checkbox" /></th>
-                                    <th>UUID</th>
-                                    <th>Email</th>
-                                    <th>Full Name</th>
-                                    <th>Role</th>
-                                    <th>Join Date</th>
-                                    <th>Login Attempts</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {loading ? (
-                                    <tr>
-                                        <td colSpan={9} className="text-center py-10 text-muted-foreground">
-                                            Loading users...
-                                        </td>
-                                    </tr>
-                                ) : users.length === 0 ? (
-                                    <tr>
-                                        <td colSpan={9} className="text-center py-10 text-muted-foreground">
-                                            No users found.
-                                        </td>
-                                    </tr>
-                                ) : (
-                                    users.map((user) => (
-                                        <tr key={user.id}>
-                                            <td><input type="checkbox" /></td>
-                                            <td className="font-mono text-sm">{user.id}</td>
-                                            <td>{user.user_email}</td>
-                                            <td>{user.user_fullname || "—"}</td>
-                                            <td>
-                                                <span className="capitalize px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
-                                                    {user.user_role}
-                                                </span>
-                                            </td>
-                                            <td>{formatDate(user.created_at)}</td>
-                                            <td className="text-center">{user.login_attempts}</td>
-                                            <td>
-                                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${user.is_locked
-                                                        ? "text-red-600"
-                                                        : "text-green-600"
-                                                    }`}>
-                                                    {user.is_locked ? "Locked" : "Active"}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <Button
-                                                    variant={'default'}
-                                                    size="sm"
-                                                    onClick={() => {
-                                                        // TODO: Open user detail view
-                                                        setIsTableHidden(true);
-                                                        console.log("Viewing user:", user);
-                                                    }}
-                                                >
-                                                    View Details
-                                                </Button>
-                                            </td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
-                </div> */}
-
+                {/* Data Table */}
                 <Suspense fallback={<div>Loading...</div>}>
                     <div className={`${isTableHidden ? 'hidden' : 'block'} w-full h-full`}>
                         <DataTable<User>
@@ -260,10 +156,10 @@ const page = () => {
                                 {key: "created_at", label: "Joined At", sortable: true, render: (_: any, row: any) => (
                                     <p>{formatDate(row.created_at)}</p>
                                 )},
-                                {key: "user_email", label: "Email", sortable: true},
-                                {key: "user_role", label: "Role"},
+                                { key: "user_email", label: "Email", sortable: true, searchable: true },
+                                {key: "user_role", label: "Role", filterable: true},
                                 {key: "login_attempts", label: "Login Attempts"},
-                                {key: "is_locked", label: "Status", render: (_: any, row: any) => (
+                                {key: "is_locked", label: "Status", filterable : true ,render: (_: any, row: any) => (
                                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${row.is_locked
                                         ? "text-red-600"
                                         : "text-green-600"
@@ -271,18 +167,31 @@ const page = () => {
                                         {row.is_locked ? "Locked" : "Active"}
                                     </span>
                                 )},
-                                {key: "user_fullname", label: "Full Name", sortable: true},
-                                {key: "role", label: "Actions", render: (_ : any, row : any) => (
-                                    <Button
-                                        variant={'default'}
-                                        size="sm"
-                                        onClick={() => {
-                                            // TODO: open detail page depending on row.role
-                                            setIsTableHidden(true);
-                                        }}
-                                    >
-                                        View Details
-                                    </Button>
+                                { key: "user_fullname", label: "Full Name", sortable: true, searchable: true },
+                                {key: "role", label: "Actions", sortable: false ,render: (_ : any, row : any) => (
+                                    <div className="flex flex-row gap-2 w-full justify-center">
+                                        <Button
+                                            variant={'default'}
+                                            size="sm"
+                                            onClick={() => {
+                                                // TODO: open detail page depending on row.role
+                                                setIsTableHidden(true);
+                                            }}
+                                        >
+                                            View Details
+                                        </Button>
+
+                                        <Button
+                                            variant={'red_default'}
+                                            size="sm"
+                                            onClick={() => {
+                                                // TODO: Reset Login Attempts of user row.id
+                                                
+                                            }}
+                                        >
+                                            Unlock
+                                        </Button>
+                                    </div>
                                 )},
                             ]}
                         />
