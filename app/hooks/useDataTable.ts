@@ -9,6 +9,9 @@ export function useDataTable(entity: string, searchableColumns: string[] = []) {
     const [sort, setSort] = useState("id")
     const [order, setOrder] = useState<"asc" | "desc">("asc")
     const [filter, setFilter] = useState<Record<string, string>>({});
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+    const refresh = () => setRefreshTrigger(prev => prev + 1);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -54,7 +57,7 @@ export function useDataTable(entity: string, searchableColumns: string[] = []) {
         }
 
         fetchData()
-    }, [entity, page, debouncedQ, sort, order, filter])
+    }, [entity, page, debouncedQ, sort, order, filter, refreshTrigger])
 
     useEffect(() => {
         setPage(1);
@@ -75,6 +78,7 @@ export function useDataTable(entity: string, searchableColumns: string[] = []) {
         order,
         setOrder,
         filter,
-        setFilter
+        setFilter,
+        refresh
     }
 }

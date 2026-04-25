@@ -8,6 +8,8 @@ import { JSX } from "react";
 import { DataTable } from "@/components/technical-components/DataTable";
 import { useDataTable } from "@/app/hooks/useDataTable";
 import { Suspense } from "react";
+import { toast } from "sonner";
+import { unlockUser } from "./actions";
 
 // User Table Types
 type User = {
@@ -15,9 +17,53 @@ type User = {
     created_at: string
     user_email: string
     user_role: string
-    login_attempt: number
+    login_attempts: number
     is_locked: boolean
     user_fullname: string
+}
+
+const ActionButtons = ({ row, table, setIsTableHidden }: { row: any, table: any, setIsTableHidden: any }) => {
+    const [isUnlocking, setIsUnlocking] = useState(false);
+
+    return (
+        <div className="flex flex-row gap-2 w-full justify-center">
+            <Button
+                variant={'default'}
+                size="sm"
+                onClick={() => {
+                    // TODO: open detail page depending on row.role
+                    setIsTableHidden(true);
+                }}
+            >
+                View Details
+            </Button>
+
+            <Button
+                variant={'red_default'}
+                size="sm"
+                disabled={!row.is_locked || isUnlocking}
+                onClick={async () => {
+                    setIsUnlocking(true);
+                    try {
+                        const result = await unlockUser(row.id);
+
+                        if (!result.success) {
+                            toast.error("Failed to unlock user: " + result.error);
+                        } else {
+                            await table.refresh();
+                            toast.success("User account unlocked successfully!");
+                        }
+                    } catch (error: any) {
+                        toast.error("An error occurred: " + error.message);
+                    } finally {
+                        setIsUnlocking(false);
+                    }
+                }}
+            >
+                {isUnlocking ? "Unlocking..." : "Unlock"}
+            </Button>
+        </div>
+    );
 }
 
 const page = () => {
@@ -168,31 +214,7 @@ const page = () => {
                                     </span>
                                 )},
                                 { key: "user_fullname", label: "Full Name", sortable: true, searchable: true },
-                                {key: "role", label: "Actions", sortable: false ,render: (_ : any, row : any) => (
-                                    <div className="flex flex-row gap-2 w-full justify-center">
-                                        <Button
-                                            variant={'default'}
-                                            size="sm"
-                                            onClick={() => {
-                                                // TODO: open detail page depending on row.role
-                                                setIsTableHidden(true);
-                                            }}
-                                        >
-                                            View Details
-                                        </Button>
-
-                                        <Button
-                                            variant={'red_default'}
-                                            size="sm"
-                                            onClick={() => {
-                                                // TODO: Reset Login Attempts of user row.id
-                                                
-                                            }}
-                                        >
-                                            Unlock
-                                        </Button>
-                                    </div>
-                                )},
+                                {key: "role", label: "Actions", sortable: false ,render: (_ : any, row : any) => <ActionButtons row={row} table={table} setIsTableHidden={setIsTableHidden} />},
                             ]}
                         />
                     </div>
