@@ -21,7 +21,7 @@ type User = {
     is_locked: boolean
     user_fullname: string
 }
-
+    
 const ActionButtons = ({ row, table, setIsTableHidden }: { row: any, table: any, setIsTableHidden: any }) => {
     const [isUnlocking, setIsUnlocking] = useState(false);
 

@@ -271,8 +271,8 @@ export function LoginForm({
             </div>
             {!showMfa && (
               <>
-                <Separator />
-                <SocialAuthButtons />
+                {/* <Separator /> */}
+                {/* <SocialAuthButtons /> */}
                 <div className="mt-4 text-center text-sm">
                   Don&apos;t have an account?{" "}
                   <Link
