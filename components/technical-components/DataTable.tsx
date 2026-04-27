@@ -18,6 +18,7 @@ import {
     useReactTable,
 } from "@tanstack/react-table"
 import { ChangeEvent, useEffect } from "react"
+import { formatEntity } from "@/lib/functions"
 
 export function DataTable<T>({
     entity,
@@ -36,7 +37,8 @@ export function DataTable<T>({
     setOrder,
     loading,
     filter,
-    setFilter
+    setFilter,
+    doesSearchableColumnsExist
 }: any) {
 
     const [filterOptions, setFilterOptions] = useState<
@@ -75,7 +77,7 @@ export function DataTable<T>({
 
         const res = await fetch("/api/fetch-distinct-values", {
             method: "POST",
-            body: JSON.stringify({ column_name: key })
+            body: JSON.stringify({ column_name: key, table_name : entity })
         });
 
         const json = await res.json();
@@ -185,9 +187,18 @@ export function DataTable<T>({
                         onChange={(e) => {
                             setQ(e.target.value)
                         }}
-                        placeholder={`Search ${entity}...`}
-                        className="border-muted outline-none focus:border-foreground focus:ring-foreground w-full hover:border hover:border-foreground bg-primary-foreground px-5 rounded-md"
+                        placeholder={`Search ${formatEntity(entity)}...`}
+                        className={`border-muted outline-none focus:border-foreground focus:ring-foreground w-full hover:border hover:border-foreground bg-primary-foreground px-5 rounded-md ${doesSearchableColumnsExist ? 'block' : 'hidden'}`}
                     />
+                    <Button
+                    className="h-full"
+                        variant="outline"
+                        onClick={() => {
+                            setFilter({});
+                        }}
+                    >
+                        Clear Filters
+                    </Button>
                     {/* <SortBy sortOptions={[""]} />
                     <FilterBy filterOptions={[""]} /> */}
                 </div>
@@ -196,9 +207,9 @@ export function DataTable<T>({
                 <div className="w-full border border-muted rounded-lg overflow-hidden">
                     <div className="p-4">
 
-                        <table className="min-w-full border-collapse *:*:*:border *:*:*:border-muted *:*:*:p-4 w-full">
+                        <table className="min-w-full border-collapse *:*:*:border *:*:*:border-muted w-full">
 
-                            <thead>
+                            <thead className="">
                                 {table.getHeaderGroups().map((hg) => (
                                     <tr key={hg.id} className="bg-primary-foreground">
                                         {hg.headers.map((header) => {
@@ -216,7 +227,7 @@ export function DataTable<T>({
                                                             // Filter Div 
                                                             ? <select
                                                                 defaultValue=""
-                                                                className="border-muted outline-none focus:border-foreground focus:ring-foreground h-full hover:border hover:border-foreground bg-primary-foreground"
+                                                                className="border-0 outline-none focus:bg-secondary focus:ring-0 h-full w-full m-0 bg-primary-foreground hover:bg-secondary active:bg-primary-foreground p-4"
                                                                 onChange={(e) =>
                                                                     setFilter((prev : any) => ({
                                                                         ...prev,
@@ -225,8 +236,8 @@ export function DataTable<T>({
                                                                 }
                                                             >
                                                                 {/* Parang Placeholder - initial value na makikita ng user */}
-                                                                <option value="" disabled hidden>
-                                                                    {flexRender(header.column.columnDef.header, header.getContext())}
+                                                                <option value="">
+                                                                    All {flexRender(header.column.columnDef.header, header.getContext())}
                                                                 </option>
 
                                                                 {/* Options */}
@@ -239,7 +250,7 @@ export function DataTable<T>({
                                                                 }
                                                             </select>
                                                             // Sorting Div
-                                                            : <div className="flex flex-row gap-2 justify-center items-center">
+                                                            : <div className="flex flex-row gap-2 justify-center items-center p-4">
                                                                 {
                                                                     flexRender(
                                                                         header.column.columnDef.header,
@@ -256,7 +267,7 @@ export function DataTable<T>({
                                 ))}
                             </thead>
 
-                            <tbody>
+                            <tbody className="*:*:p-4">
                                 {loading ? (
                                     <tr>
                                         <td colSpan={columns.length} className="text-center py-10 text-muted-foreground">

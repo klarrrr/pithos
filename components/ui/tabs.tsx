@@ -1,35 +1,42 @@
 "use client";
 
-import { JSX } from 'react'
-import { useState } from 'react';
+import { useState } from "react";
 
-const Tabs = ({ items }: { items: Array<JSX.Element> }) => {
-    
-    // Use States
-    const [activeTab, setActiveTab] = useState(1); 
+type TabItem = {
+    label: string;
+    content: React.ReactNode;
+};
 
-    // Rendering Function
-
-    const renderItems = () => {
-        return items.map((item, index)=>renderItem(item, index));
-    }
-
-    const renderItem = (item : JSX.Element, index : number) => {
-        console.log(index);
-        return <div className={`${activeTab === index+1 ? 'flex' : 'hidden'}`} key={index}>{item}</div>
-    }
+const Tabs = ({ items }: { items: TabItem[] }) => {
+    const [activeTab, setActiveTab] = useState(0); // ✅ 0-based
 
     return (
-        // Tabs
+        <div className="flex flex-col gap-4">
 
-        <div className='flex flex-col gap-4'>
-            <div className='flex w-full gap-8 font-medium text-lg *:pb-4 bo border-b'>
-                <button onClick={()=>setActiveTab(1)} className={`hover:border-b-chart-5 hover:border-b-2 hover:text-chart-5 ${activeTab === 1 ? 'border-b-accent border-b-2 text-accent' : 'text-muted-foreground'} transition duration-300 ease-in-out `} >Transactions</button>
-                <button onClick={()=>setActiveTab(2)} className={`hover:border-b-chart-5 hover:border-b-2 hover:text-chart-5 ${activeTab === 2 ? 'border-b-accent border-b-2 text-accent' : 'text-muted-foreground'} transition duration-300 ease-in-out `} >Given Ratings</button>
+            {/* Tab Headers */}
+            <div className="flex w-full gap-8 font-medium text-lg border-b">
+                {items.map((item, index) => (
+                    <button
+                        key={index}
+                        onClick={() => setActiveTab(index)}
+                        className={`pb-4 transition duration-300 ease-in-out
+              hover:border-b-2 hover:border-b-chart-5 hover:text-chart-5
+              ${activeTab === index
+                                ? "border-b-2 border-b-accent text-accent"
+                                : "text-muted-foreground"
+                            }`}
+                    >
+                        {item.label}
+                    </button>
+                ))}
             </div>
-            {renderItems()}
-        </div>
-    )
-}
 
-export default Tabs
+            {/* Tab Content */}
+            <div className="w-full">
+                {items[activeTab]?.content}
+            </div>
+        </div>
+    );
+};
+
+export default Tabs;

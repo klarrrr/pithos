@@ -1,6 +1,6 @@
-import Link from "next/link"
 import { LogoutButton } from "./logout-button"
 import { JSX } from "react";
+import { createAudit } from "@/lib/supabase/create-audit";
 
 // TODO : absolute -translate-x-[300px] - to hide and show the sidebar
 const SideBar = ({links, settingLink} : {links : Array<JSX.Element>, settingLink? : JSX.Element}) => {
@@ -12,7 +12,7 @@ const SideBar = ({links, settingLink} : {links : Array<JSX.Element>, settingLink
         </div>
         <div className={`flex flex-col gap-${linksGap}`}>
             {settingLink}            
-            <LogoutButton />
+            <LogoutButton createAudit={createAudit} />
         </div>
     </aside>
   )

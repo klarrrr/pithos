@@ -1,19 +1,30 @@
 import { useEffect, useState } from "react"
 
-export function useDataTable(entity: string, searchableColumns: string[] = []) {
+export function useDataTable(
+    entity: string, 
+    options: {
+        searchableColumns?: string[]
+        baseFilters?: Record<string, string | number | boolean>
+        enabled? : boolean
+    }
+) {
     const [data, setData] = useState([])
     const [total, setTotal] = useState(0)
     const [page, setPage] = useState(1)
     const [q, setQ] = useState("")
     const [debouncedQ, setDebouncedQ] = useState("");
-    const [sort, setSort] = useState("id")
+    const [sort, setSort] = useState("")
     const [order, setOrder] = useState<"asc" | "desc">("asc")
     const [filter, setFilter] = useState<Record<string, string>>({});
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const doesSearchableColumnsExist = options.searchableColumns ? true : false
+    const baseFiltersKey = JSON.stringify(options.baseFilters);
 
     const refresh = () => setRefreshTrigger(prev => prev + 1);
 
     useEffect(() => {
+        if (!options.enabled) return;
+
         const fetchData = async () => {
             
             try {
@@ -27,11 +38,20 @@ export function useDataTable(entity: string, searchableColumns: string[] = []) {
                 })
 
                 // Append each searchable columns
-                searchableColumns.forEach(col => {
-                    params.append("search", col);
-                });
+                if(options.searchableColumns){
+                    options.searchableColumns.forEach(col => {
+                        params.append("search", col);
+                    });
+                }
 
-                // Append each filter string
+                // Append each base filter - different from normal filter
+                if(options.baseFilters) {
+                    Object.entries(options.baseFilters).forEach(([key, value]) => {
+                        params.append(`base[${key}]`, String(value));
+                    });
+                }
+
+                // Append each filter
                 Object.entries(filter).forEach(([column, value]) => {
                     if (value) {
                         params.append(`filter[${column}]`, value);
@@ -57,7 +77,7 @@ export function useDataTable(entity: string, searchableColumns: string[] = []) {
         }
 
         fetchData()
-    }, [entity, page, debouncedQ, sort, order, filter, refreshTrigger])
+    }, [entity, page, debouncedQ, sort, order, filter, refreshTrigger, baseFiltersKey, options.enabled])
 
     useEffect(() => {
         setPage(1);
@@ -79,6 +99,7 @@ export function useDataTable(entity: string, searchableColumns: string[] = []) {
         setOrder,
         filter,
         setFilter,
-        refresh
+        refresh,
+        doesSearchableColumnsExist
     }
 }

@@ -10,6 +10,9 @@ import { useDataTable } from "@/app/hooks/useDataTable";
 import { Suspense } from "react";
 import { toast } from "sonner";
 import { unlockUser } from "./actions";
+import { formatDate } from "@/lib/functions";
+import { capitalizeFirstLetter } from "@/lib/functions";
+import { useMemo } from "react";
 
 // User Table Types
 type User = {
@@ -21,8 +24,31 @@ type User = {
     is_locked: boolean
     user_fullname: string
 }
-    
-const ActionButtons = ({ row, table, setIsTableHidden }: { row: any, table: any, setIsTableHidden: any }) => {
+
+type Transaction = {
+    transaction_id: string
+    buyer_id: string
+    product_id: string
+    created_at: string
+    status: string
+}
+
+type Reviews = {
+    review_id : string
+    review_description : string
+    reviewer_id : string
+    created_at : string
+    product_id : string
+    rating : number
+}
+
+const ActionButtons = (
+    {
+        row,
+        table,
+        setPageTitle,
+        setSelectedUser
+    }: any) => {
     const [isUnlocking, setIsUnlocking] = useState(false);
 
     return (
@@ -31,8 +57,10 @@ const ActionButtons = ({ row, table, setIsTableHidden }: { row: any, table: any,
                 variant={'default'}
                 size="sm"
                 onClick={() => {
+                    if (row.user_role === "admin") return;
                     // TODO: open detail page depending on row.role
-                    setIsTableHidden(true);
+                    setSelectedUser(row);
+                    setPageTitle(`View ${capitalizeFirstLetter(row.user_role)} Details`);
                 }}
             >
                 View Details
@@ -66,122 +94,65 @@ const ActionButtons = ({ row, table, setIsTableHidden }: { row: any, table: any,
     );
 }
 
-const page = () => {
-    
+const Page = () => {
+
     // States
-    const [isTableHidden, setIsTableHidden] = useState(false);
 
-    const table = useDataTable("users", [
-        "user_email",
-        "user_fullname"
-    ])
+    // Table
+    const [pageTitle, setPageTitle] = useState("Manage Users");
 
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('en-PH', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-        });
-    };
-    
-    // Tabs to cycle between in buyers
-    const buyer_items: JSX.Element[] = [
+    // User Details
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
-        // Table
-        <div className="w-full min-h-0 overflow-auto">
-            {/* Transactions */}
-            <div className="w-full p-4 bg-primary-foreground border border-muted rounded-lg">
-                <div className="overflow-x-auto">
-                    <table className=" min-w-full *:*:*:border *:*:*:border-muted *:*:*:p-4 w-full bg-primary-foreground" border={1}>
-                        <thead>
-                            <tr>
-                                <td><input type="checkbox" name="" id="" /></td>
-                                <th>Transaction ID</th>
-                                <th>Buyer ID</th>
-                                <th>Product ID</th>
-                                <th>Created At</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="checkbox" name="" id="" /></td>
-                                <td>129616 182736 1293</td>
-                                <td>98547 1086 95816</td>
-                                <td>1231 98167 9817698</td>
-                                <td>1-1-1977</td>
-                                <td>PHP67,000.00</td>
-                                <td>Active</td>
-                                <td>
-                                    {/* TODO : onclick dapat mapupunta sa detailed transactions or just plain [ EDIT / DELETE / ARCHIVE ] */}
-                                    <Button variant={'default'} onClick={() => { }}>
-                                        Edit
-                                    </Button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" name="" id="" /></td>
-                                <td>129616 182736 1293</td>
-                                <td>98547 1086 95816</td>
-                                <td>1231 98167 9817698</td>
-                                <td>1-1-1977</td>
-                                <td>PHP67,000.00</td>
-                                <td>Active</td>
-                                <td>
-                                    {/* TODO : onclick dapat mapupunta sa detailed transactions or just plain [ EDIT / DELETE / ARCHIVE ] */}
-                                    <Button variant={'default'} onClick={() => { }}>
-                                        Edit
-                                    </Button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>,
+    // Table for Users (General)
+    const table = useDataTable("users", {
+        searchableColumns: [
+            "user_email",
+            "user_fullname"
+        ],
+        enabled : true
+    })
 
-        // Reviews
-        <div className="w-full">
-            <div className="w-full p-4 bg-primary-foreground border border-muted rounded-lg">
-                <table className="*:*:*:border *:*:*:border-muted *:*:*:p-4 w-full bg-primary-foreground" border={1}>
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" name="" id="" /></th>
-                            <th>Product UUID</th>
-                            <th>Rating</th>
-                            <th>Review</th>
-                            <th>Date & Time</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><input type="checkbox" name="" id="" /></td>
-                            <td>#123-456-789</td>
-                            <td>★★★★★</td>
-                            <td className="max-w-[500px]"><p className="line-clamp-2">
-                                Check out my store for cheap keys click here nowwwwwwwwwwwwwwwwwww Check out my store for cheap keys click here nowwwwwwwwwwwwwwwwwww Check out my store for cheap keys click here nowwwwwwwwwwwwwwwwwww
-                            </p></td>
-                            <td>3-20-2026</td>
-                            <td><div className="flex flex-row gap-4 justify-center w-full">
-                                <Button variant={"destructive"}>Delete</Button>
-                                <Button variant={"secondary"}>Hide</Button>
-                            </div></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    ]
+    // memoized
+    const bTxBaseFilters = useMemo(() => {
+        if (!selectedUser?.id) return undefined;
+        return { buyer_id: selectedUser.id };
+    }, [selectedUser?.id]);
+
+    // Table for Buyer Transactions
+    const bTxTable = useDataTable("transactions", {
+        // searchableColumns: [
+        //     "transaction_id",
+        // ],
+        baseFilters : bTxBaseFilters,
+        enabled: !!selectedUser?.id,
+    })
+
+    const bRvwsBaseFilters = useMemo(() => {
+        if (!selectedUser?.id) return undefined;
+        return { reviewer_id: selectedUser.id };
+    }, [selectedUser?.id]);
+
+    // Table for Buyer Reviews
+    const bRvwsTable = useDataTable("reviews", {
+        searchableColumns : [
+            "review_description"
+        ],
+        baseFilters: bRvwsBaseFilters,
+        enabled: !!selectedUser?.id,
+    })
+
+    // Table for Buyer Reviews
+
+// ===============================================================================================================================
+
     return (
         <div className='flex flex-col p-4 bg-background w-full gap-4'>
             {/* Header */}
             <div className="flex flex-row justify-between">
-                <h1 className='font-bold text-3xl'>Manage Users</h1>
+                <h1 className='font-bold text-3xl'>{pageTitle}</h1>
                 <div className="flex flex-row gap-2 h-full items-center">
-                   
+
                 </div>
             </div>
 
@@ -190,91 +161,207 @@ const page = () => {
             {/* Content */}
             <div className='flex gap-4 h-full'>
 
-                {/* Data Table */}
-                <Suspense fallback={<div>Loading...</div>}>
-                    <div className={`${isTableHidden ? 'hidden' : 'block'} w-full h-full`}>
-                        <DataTable<User>
-                            {...table}
-                            columns={[
-                                {key: "id", label: "User ID", sortable: true, render: (_: any, row: any) => (
-                                    <p className="font-mono text-xs">{row.id}</p>
-                                )},
-                                {key: "created_at", label: "Joined At", sortable: true, render: (_: any, row: any) => (
-                                    <p>{formatDate(row.created_at)}</p>
-                                )},
-                                { key: "user_email", label: "Email", sortable: true, searchable: true },
-                                {key: "user_role", label: "Role", filterable: true},
-                                {key: "login_attempts", label: "Login Attempts"},
-                                {key: "is_locked", label: "Status", filterable : true ,render: (_: any, row: any) => (
-                                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${row.is_locked
-                                        ? "text-red-600"
-                                        : "text-green-600"
-                                        }`}>
-                                        {row.is_locked ? "Locked" : "Active"}
-                                    </span>
-                                )},
-                                { key: "user_fullname", label: "Full Name", sortable: true, searchable: true },
-                                {key: "role", label: "Actions", sortable: false ,render: (_ : any, row : any) => <ActionButtons row={row} table={table} setIsTableHidden={setIsTableHidden} />},
-                            ]}
-                        />
-                    </div>
-                </Suspense>
+                {/* Users Data Table */}
+                {!selectedUser && (
+                    <Suspense fallback={<div className="animate-pulse w-full h-full">Loading...</div>}>
+                        <div className={`w-full h-full`}>
+                            <DataTable<User>
+                                {...table}
+                                columns={[
+                                    {
+                                        key: "id", label: "User ID", sortable: true, render: (_: any, row: any) => (
+                                            <p className="font-mono text-xs">{row.id}</p>
+                                        )
+                                    },
+                                    {
+                                        key: "created_at", label: "Joined At", sortable: true, render: (_: any, row: any) => (
+                                            <p>{formatDate(row.created_at)}</p>
+                                        )
+                                    },
+                                    {
+                                        key: "user_email", label: "Email", sortable: true, searchable: true, render: (_: any, row: any) => (
+                                            <p className="font-mono text-xs">{row.user_email}</p>
+                                        )
+                                    },
+                                    { key: "user_role", label: "Role", filterable: true },
+                                    { key: "login_attempts", label: "Log. Count" },
+                                    {
+                                        key: "is_locked", label: "Status", filterable: true, render: (_: any, row: any) => (
+                                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${row.is_locked
+                                                ? "text-red-600"
+                                                : "text-green-600"
+                                                }`}>
+                                                {row.is_locked ? "Locked" : "Active"}
+                                            </span>
+                                        )
+                                    },
+                                    { key: "user_fullname", label: "Full Name", sortable: true, searchable: true },
+                                    {
+                                        key: "role", label: "Actions", sortable: false, render: (_: any, row: any) => <ActionButtons
+                                            row={row}
+                                            table={table}
+                                            setSelectedUser={setSelectedUser}
+                                            setPageTitle={setPageTitle}
+                                        />
+                                    },
+                                ]}
+                            />
+                        </div>
+                    </Suspense>
+                )}
+                
 
-                {/* Buyer Detail Page */}
-                <div className={`${isTableHidden ? 'flex' : 'hidden'} w-full flex-row gap-4`}>
+                {selectedUser && (
+                    <div className="flex w-full gap-4">
 
-                    {/* Header Details */}
-                    <div className="flex flex-col gap-4 bg-primary-foreground border border-muted rounded-lg p-4 w-3/12">
-                        <Button
-                            variant={'red_ghost'}
-                            className="w-fit"
-                            onClick={() => setIsTableHidden(false)}
-                        >
-                            <ArrowLeft /> Go Back to Users
-                        </Button>
+                        {/* Sidebar */}
+                        <div className="flex flex-col gap-4 bg-primary-foreground border border-muted rounded-lg p-4 w-3/12">
+                            <Button
+                                variant={'red_ghost'}
+                                className="w-fit"
+                                onClick={() => setSelectedUser(null)}
+                            >
+                                <ArrowLeft /> Go Back to Users
+                            </Button>
+                            <div>
+                                <p className="text-muted-foreground">User ID</p>
+                                <p className="font-semibold">{selectedUser.id}</p>
+                            </div>
 
-                        <div className="w-[100px] h-[100px] bg-gray-500 rounded-md"></div>
-
-                        <hr />
-
-                        <div className="flex flex-col gap-4 text-sm">
                             <div>
                                 <p className="text-muted-foreground">Full Name</p>
-                                <p className="font-semibold">—</p>
+                                <p className="font-semibold">{selectedUser.user_fullname}</p>
                             </div>
+
                             <div>
                                 <p className="text-muted-foreground">Email</p>
-                                <p className="font-semibold">—</p>
+                                <p className="font-semibold">{selectedUser.user_email}</p>
                             </div>
+
                             <div>
                                 <p className="text-muted-foreground">Role</p>
-                                <p className="font-semibold">—</p>
+                                <p className="font-semibold">{capitalizeFirstLetter(selectedUser.user_role)}</p>
                             </div>
+
                             <div>
                                 <p className="text-muted-foreground">Joined At</p>
-                                <p className="font-semibold">—</p>
+                                <p className="font-semibold">{capitalizeFirstLetter(selectedUser.created_at)}</p>
                             </div>
-                            <div>
-                                <p className="text-muted-foreground">Login Attempts</p>
-                                <p className="font-semibold">—</p>
-                            </div>
+
                             <div>
                                 <p className="text-muted-foreground">Status</p>
-                                <p className="font-semibold">—</p>
+                                <p className="font-semibold">{selectedUser.is_locked ? "Locked" : "Active"}</p>
                             </div>
+
+                        </div>
+
+                        {/* Content */}
+                        <div className="bg-primary-foreground border border-muted rounded-lg p-4 w-9/12 relative flex-col">
+
+                            {/* Buyer Content */}
+                            {selectedUser.user_role === "buyer" && (
+                                <Tabs items={[
+                                    {
+                                        label: "Transactions",
+                                        content : (
+                                            <Suspense fallback={<div className="animate-pulse w-full h-full">Loading...</div>}>
+
+                                                <DataTable<Transaction>
+                                                    {...bTxTable}
+                                                    columns={[
+                                                        {
+                                                            key: "transaction_id", label: "TX ID", sortable: true, render: (_: any, row: any) => (
+                                                                <p className="font-mono text-xs">{row.transaction_id}</p>
+                                                            )
+                                                        },
+                                                        {
+                                                            key: "buyer_id", label: "Buyer ID", sortable: true, render: (_: any, row: any) => (
+                                                                <p className="font-mono text-xs">{row.buyer_id}</p>
+                                                            )
+                                                        },
+                                                        {
+                                                            key: "product_id", label: "Product ID", sortable: true, render: (_: any, row: any) => (
+                                                                <p className="font-mono text-xs">{row.product_id}</p>
+                                                            )
+                                                        },
+                                                        {
+                                                            key: "created_at", label: "Date", sortable: true, render: (_: any, row: any) => (
+                                                                <p>{formatDate(row.created_at)}</p>
+                                                            )
+                                                        },
+                                                        {
+                                                            key: "status", label: "Status", filterable: true, render: (_: any, row: any) => (
+                                                                <span className={`px-3 py-1 rounded-full text-xs font-medium 
+                                                                ${row.status === "pending"
+                                                                        ? "text-yellow-600"
+                                                                        : row.status === "completed" ? "text-green-600" : "text-red-600"
+                                                                    }`}>
+                                                                    {capitalizeFirstLetter(row.status)}
+                                                                </span>
+                                                            )
+                                                        },
+                                                    ]}
+                                                />
+
+                                            </Suspense>
+                                        )
+                                    },
+                                    {
+                                        label: "Reviews",
+                                        content: (
+                                            <Suspense fallback={<div className="animate-pulse w-full h-full">Loading...</div>}>
+
+                                                <DataTable<Reviews>
+                                                    {...bRvwsTable}
+                                                    columns={[
+                                                        {
+                                                            key: "review_id", label: "Rvw ID", sortable: true, render: (_: any, row: any) => (
+                                                                <p className="font-mono text-xs">{row.review_id}</p>
+                                                            )
+                                                        },
+                                                        {
+                                                            key: "review_description", label: "Description",
+                                                        },
+                                                        {
+                                                            key: "reviewer_id", label: "Reviewer", sortable: true, render: (_: any, row: any) => (
+                                                                <p className="font-mono text-xs">{row.reviewer_id}</p>
+                                                            )
+                                                        },
+                                                        {
+                                                            key: "created_at", label: "Date", sortable: true, render: (_: any, row: any) => (
+                                                                <p>{formatDate(row.created_at)}</p>
+                                                            )
+                                                        },
+                                                        {
+                                                            key: "product_id", label: "Product", sortable: true, render: (_: any, row: any) => (
+                                                                <p className="font-mono text-xs">{row.product_id}</p>
+                                                            )
+                                                        },
+                                                        {
+                                                            key: "rating", label: "Rating", filterable : true,
+                                                        },
+                                                    ]}
+                                                />
+
+                                            </Suspense>
+                                        )
+                                    }
+                                ]} />
+                            )}
+
+                            {/* Seller Content */}
+                            {selectedUser.user_role === "seller" && (
+                                <div>Seller content here</div>
+                            )}
+
                         </div>
                     </div>
+                )}
 
-                    {/* Tabs */}
-                    <div className="bg-primary-foreground border border-muted rounded-lg p-4 w-9/12 relative flex-col">
-                        <Tabs items={buyer_items} />
-                    </div>
-
-                </div>
             </div>
 
         </div>
     )
 }
 
-export default page
+export default Page

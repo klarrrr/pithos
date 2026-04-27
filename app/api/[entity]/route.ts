@@ -14,9 +14,10 @@ export async function GET(
 
     const page = Number(searchParams.get("page") ?? 1)
     const q = searchParams.get("q") ?? ""
-    const sort = searchParams.get("sort") ?? "id"
+    const sort = searchParams.get("sort") ?? ""
     const order = searchParams.get("order") ?? "asc"
     const filters: Record<string, string[]> = {};
+    const baseFilters: Record<string, string> = {};
 
     searchParams.forEach((value, key) => {
         const match = key.match(/^filter\[(.+)\]$/);
@@ -47,6 +48,14 @@ export async function GET(
         query = query.or(orQuery);
     }
 
+    // Base Filters - if table requires to be specific
+    if (baseFilters) {
+        Object.entries(baseFilters).forEach(([column, value]) => {
+            query = query.eq(column, value);
+        });
+    }
+
+    // Filters for application
     if (filters) {
         Object.entries(filters).forEach(([column, values]) => {
             if (values.length === 1) {
@@ -57,8 +66,10 @@ export async function GET(
         });
     }
 
-    query = query.order(sort, { ascending: order === "asc" })
+    // Sort/Order
+    if (sort) query = query.order(sort, { ascending: order === "asc" })
 
+    // Do the query, destructure the following return values.
     const { data, count, error } = await query.range(from, to)
 
     // Log Supabase errors
@@ -70,6 +81,7 @@ export async function GET(
         })
     }
 
+    // Return
     return NextResponse.json(
         {
             data,
